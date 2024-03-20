@@ -1,0 +1,11 @@
+.toolbar-spacer {
+    flex: 1 1 auto;
+  }
+.socials-button-row button,
+.socials-button-row a {
+    margin-right: 8px;
+}
+
+.content {
+    margin: 30px;
+}
