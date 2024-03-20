@@ -1,37 +1,42 @@
-<mat-card class="jumbotron">
-    <mat-card-header>
-        <mat-card-title>
-            <h1>Hello World!</h1>
-        </mat-card-title>
-        <mat-card-subtitle>
-            <p>Welcome to my website. Yes! This is nothing much than my resume on the web. Feel free to select the
-                objective based on the type of individual you are looking to learn about.</p>
-        </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-            <mat-tab label="Individual Contributor">
-                <h2>Engineering Enthusiast</h2>
-                <p>Seasoned engineering professional with a robust background in leading cross-functional
-                    teams to achieve operational excellence. Eager to transition into a Software Engineering
-                    role, leveraging comprehensive expertise in software development across a range of
-                    technologies including Java, C#, Python, and Go. Proficient in managing cloud
-                    infrastructure, implementing CI/CD pipelines, and ensuring system reliability and
-                    security. Committed to driving innovation and delivering high-quality solutions.
-                    Seeking a challenging opportunity to apply leadership experience and technical
-                    proficiency in software architecture and development within a dynamic team environment.</p>
-            </mat-tab>
-            <mat-tab label="Leadership">
-                <h2>Engineering Leader</h2>
-                <p>I am seeking a leadership position where I can leverage my technical expertise,
-                    leadership skills, and business acumen to drive organizational growth, streamline
-                    operations, foster a culture of continuous improvement, and optimize software
-                    development and delivery processes. Committed to delivering innovative solutions
-                    with cloud technologies, automation, and scalability to drive operational excellence
-                    and enable seamless cloud deployments. Excited to leverage my expertise in cloud
-                    architecture, DevOps practices, and continuous improvement to contribute to the
-                    success of a forward-thinking organization.</p>
-            </mat-tab>
-        </mat-tab-group>
-    </mat-card-content>
-</mat-card>
+<section>
+    <mat-card class="jumbotron">
+        <mat-card-header>
+            <mat-card-title>
+                <h1>Hello World!</h1>
+            </mat-card-title>
+            <mat-card-subtitle>
+                <p>Welcome to my website. Yes! This is nothing much than my resume on the web. Feel free to select the
+                    objective based on the type of individual you are looking to learn about.</p>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+                <mat-tab label="Individual Contributor">
+                    <h2>Engineering Enthusiast</h2>
+                    <p>Seasoned engineering professional with a robust background in leading cross-functional
+                        teams to achieve operational excellence. Eager to transition into a Software Engineering
+                        role, leveraging comprehensive expertise in software development across a range of
+                        technologies including Java, C#, Python, and Go. Proficient in managing cloud
+                        infrastructure, implementing CI/CD pipelines, and ensuring system reliability and
+                        security. Committed to driving innovation and delivering high-quality solutions.
+                        Seeking a challenging opportunity to apply leadership experience and technical
+                        proficiency in software architecture and development within a dynamic team environment.</p>
+                </mat-tab>
+                <mat-tab label="Leadership">
+                    <h2>Engineering Leader</h2>
+                    <p>I am seeking a leadership position where I can leverage my technical expertise,
+                        leadership skills, and business acumen to drive organizational growth, streamline
+                        operations, foster a culture of continuous improvement, and optimize software
+                        development and delivery processes. Committed to delivering innovative solutions
+                        with cloud technologies, automation, and scalability to drive operational excellence
+                        and enable seamless cloud deployments. Excited to leverage my expertise in cloud
+                        architecture, DevOps practices, and continuous improvement to contribute to the
+                        success of a forward-thinking organization.</p>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </mat-card>
+</section>
+<section>
+    <app-job *ngFor="let job of jobList" [job]="job"></app-job>
+</section>
