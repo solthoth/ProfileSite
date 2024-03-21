@@ -1,5 +1,5 @@
 name: Build and Test
-run: ${{ github.actor }} is building ProfileSite
+run-name: ${{ github.actor }} is building ProfileSite
 on: [push, pull_request]
 jobs:
   build:
