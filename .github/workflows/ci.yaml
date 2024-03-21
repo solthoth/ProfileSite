@@ -1,8 +1,6 @@
 name: Build and Test
 run: ${{ github.actor }} is building ProfileSite
 on: [push, pull_request]
-permissions:
-  content: read
 jobs:
   build:
     runs-on: ubuntu-latest
