@@ -6,5 +6,5 @@ export interface Job {
     dateRange: string,
     internalRange: string,
     achivements: string[],
-    details: string[],
+    details?: string[],
 }
