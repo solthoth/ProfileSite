@@ -1,0 +1,30 @@
+name: Build and Test
+run: ${{ github.actor }} is building ProfileSite
+on: [push, pull_request]
+permissions:
+  content: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node & Angular
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: cd ./solthoth
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      ## https://github.com/marketplace/actions/ftp-deploy
+      # - name: FTP Deploy
+      #   uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      #   with:
+      #     server: {{ env.FTP_SERVER }}
+      #     username: {{ env.FTP_USERNAME }}
+      #     password: {{ secrets.FTP_PASSWORD }}
+      #     protocol: ftps
+      #     exclude: |
+      #       **/.devcontainer/**
+      #       **/.github/**
+            
