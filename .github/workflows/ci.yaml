@@ -4,13 +4,17 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./solthoth
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node & Angular
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: cd ./solthoth
       - run: npm ci
       - run: npm test
       - run: npm run build
