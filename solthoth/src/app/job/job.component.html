@@ -6,16 +6,15 @@
         </mat-card-header>
         <mat-card-content>
             <mat-list>
-            @for (detail of job.details; track detail) {
+            @for (achivement of job.achivements; track achivement) {
                 <mat-list-item>
-                    <mat-icon matListItemIcon>note</mat-icon>
-                    <div matListItemTitle>{{detail}}</div>
+                    <div>{{achivement}}</div>
                 </mat-list-item>
             }
             </mat-list>
         </mat-card-content>
-        <mat-card-actions>
+        <!-- <mat-card-actions>
             <a [routerLink]="['/details', job.id]">Learn More</a>
-        </mat-card-actions>
+        </mat-card-actions> -->
     </mat-card>
 </section>
