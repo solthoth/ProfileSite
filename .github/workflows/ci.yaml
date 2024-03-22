@@ -18,6 +18,8 @@ jobs:
       - run: npm ci
       # - run: npm run test:headless
       - run: npm run build
+      - name: display browser files
+        run: ls -R ./dist/solthoth
       - name: Upload browser files
         uses: actions/upload-artifact@v4
         with:
