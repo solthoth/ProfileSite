@@ -1,20 +1,20 @@
 <section class="job">
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>{{job.title}} - <a href="{{job.companyLink}}">{{job.companyName}}</a></mat-card-title>
-            <mat-card-subtitle>{{ job.dateRange  }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            <mat-list>
-            @for (achivement of job.achivements; track achivement) {
-                <mat-list-item>
-                    <div>{{achivement}}</div>
-                </mat-list-item>
-            }
-            </mat-list>
-        </mat-card-content>
-        <!-- <mat-card-actions>
-            <a [routerLink]="['/details', job.id]">Learn More</a>
-        </mat-card-actions> -->
-    </mat-card>
+  <mat-card class="job-card">
+    <div class="job-card__header">
+      <div class="job-card__heading">
+        <h3 class="job-card__title">{{ job.title }}</h3>
+        <a class="job-card__company" href="{{ job.companyLink }}" target="_blank" rel="noopener">{{ job.companyName }}</a>
+      </div>
+      <span class="job-card__dates">{{ job.dateRange }}</span>
+    </div>
+    <div class="job-card__body">
+      <ul class="job-card__list">
+        @for (achivement of job.achivements; track achivement) {
+          <li class="job-card__list-item">
+            <span>{{ achivement }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+  </mat-card>
 </section>
