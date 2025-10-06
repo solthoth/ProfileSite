@@ -1,8 +1,51 @@
-.jumbotro {
-    padding-right: 60px;
-    padding-left: 60px;
+:host {
+  display: block;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--spacing-xl);
+}
+
+.jumbotron {
+  width: min(100%, var(--layout-max-width));
+  padding: var(--spacing-xl) var(--spacing-4xl);
+  box-sizing: border-box;
 }
 
 .mat-tab-group {
-    margin-bottom: 48px;
+  margin-bottom: var(--spacing-3xl);
+}
+
+section:last-of-type {
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+@media (max-width: 900px) {
+  .jumbotron {
+    padding: var(--spacing-lg) var(--spacing-2xl);
   }
+
+  section:last-of-type {
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 600px) {
+  section {
+    padding-bottom: var(--spacing-lg);
+  }
+
+  .jumbotron {
+    padding: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 420px) {
+  .jumbotron {
+    padding: var(--spacing-md);
+  }
+}

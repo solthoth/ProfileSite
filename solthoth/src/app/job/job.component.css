@@ -1,4 +1,61 @@
 .job {
-    padding: 20px;
-    /* max-width: 400px; */
+  width: min(100%, var(--layout-max-width));
+  padding: 0 var(--spacing-lg);
+  box-sizing: border-box;
+}
+
+.job mat-card {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.job mat-card-title {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.job mat-card-subtitle {
+  font-size: 0.95rem;
+}
+
+.job mat-list {
+  padding: 0;
+}
+
+.job mat-list-item {
+  height: auto;
+  padding: var(--spacing-2xs) 0;
+  align-items: flex-start;
+}
+
+.job mat-list-item div {
+  white-space: normal;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .job {
+    padding: 0 var(--spacing-md);
+  }
+}
+
+@media (max-width: 600px) {
+  .job {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .job mat-card-title {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .job {
+    padding: 0 var(--spacing-xs);
+  }
+
+  .job mat-card {
+    padding: var(--spacing-sm);
+  }
 }
