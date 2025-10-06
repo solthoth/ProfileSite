@@ -1,6 +1,7 @@
 .job {
-  width: min(100%, var(--layout-max-width));
-  padding: 0 var(--spacing-lg);
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
   box-sizing: border-box;
 }
 
@@ -34,27 +35,13 @@
   line-height: 1.6;
 }
 
-@media (max-width: 900px) {
-  .job {
-    padding: 0 var(--spacing-md);
-  }
-}
-
 @media (max-width: 600px) {
-  .job {
-    padding: 0 var(--spacing-sm);
-  }
-
   .job mat-card-title {
     font-size: 1.1rem;
   }
 }
 
 @media (max-width: 420px) {
-  .job {
-    padding: 0 var(--spacing-xs);
-  }
-
   .job mat-card {
     padding: var(--spacing-sm);
   }
