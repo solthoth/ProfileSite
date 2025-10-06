@@ -1,15 +1,25 @@
-<main>
-  <header>
-    <mat-toolbar>
-      <span>Carlos Barajas</span>
-      <span class="toolbar-spacer"></span>
-      <div class="socials-button-row">
-        <a mat-button href="https://github.com/solthoth">GitHub</a>
-        <a mat-button href="https://www.linkedin.com/in/solthoth/" target="_blank">LinkedIn</a>
-      </div>
-    </mat-toolbar>
+<main class="app-shell">
+  <header class="app-header">
+    <div class="app-header__inner">
+      <mat-toolbar class="toolbar">
+        <div class="brand">
+          <span class="brand-avatar">CB</span>
+          <div class="brand-copy">
+            <span class="brand-name">Carlos Barajas</span>
+            <span class="brand-role">Site Reliability &amp; Engineering Leadership</span>
+          </div>
+        </div>
+        <span class="toolbar-spacer"></span>
+        <nav class="toolbar-links">
+          <a mat-button class="toolbar-link" href="https://github.com/solthoth" target="_blank" rel="noopener">GitHub</a>
+          <a mat-button class="toolbar-link toolbar-link--primary" href="https://www.linkedin.com/in/solthoth/" target="_blank" rel="noopener">LinkedIn</a>
+        </nav>
+      </mat-toolbar>
+    </div>
   </header>
   <section class="content">
-    <router-outlet></router-outlet>
+    <div class="page-container">
+      <router-outlet></router-outlet>
+    </div>
   </section>
 </main>
