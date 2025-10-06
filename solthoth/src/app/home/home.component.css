@@ -5,11 +5,15 @@
 section {
   display: flex;
   justify-content: center;
-  padding-bottom: var(--spacing-xl);
+  width: 100%;
+  padding: 0 0 var(--spacing-xl);
+  box-sizing: border-box;
 }
 
 .jumbotron {
-  width: min(100%, var(--layout-max-width));
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
   padding: var(--spacing-xl) var(--spacing-4xl);
   box-sizing: border-box;
 }
@@ -20,7 +24,11 @@ section {
 
 section:last-of-type {
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
   gap: var(--spacing-xl);
 }
 
