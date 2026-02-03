@@ -63,20 +63,3 @@ jobs:
           name: browser_profile_ftp
           path: ${{ github.workspace }}/solthoth/dist/solthoth/browser/
           if-no-files-found: error
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Download browser files
-        uses: actions/download-artifact@v4
-        with:
-          name: browser_profile_ftp
-      # https://github.com/marketplace/actions/ftp-deploy
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ env.FTP_SERVER }}
-          username: ${{ env.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
