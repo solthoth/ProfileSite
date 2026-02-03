@@ -1,5 +1,10 @@
 {
   "permissions": {
-    "allow": ["Bash(npm install:*)", "Bash(pre-commit install:*)"]
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(pre-commit install:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)"
+    ]
   }
 }
