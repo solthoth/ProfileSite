@@ -1,3 +1,8 @@
+# Custom Files
+.DS_Store
+PR_TITLE.txt
+PR.md
+
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,angular
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,angular
 
