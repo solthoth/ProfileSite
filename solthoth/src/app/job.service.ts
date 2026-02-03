@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { Job } from './job';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JobService {
-
   protected jobList: Job[] = [
     {
       id: 'edcbb4ab-4c8b-41db-856b-725a0580b595',
@@ -113,7 +112,7 @@ export class JobService {
         'Updated domain services per business requirements in C# using WCF and REST.',
         'Updated front-end desktop applications written in C# using WPF and WinForms.',
         'Added enhancements to CI/CD, reducing build and test times via multi- threading tests and NUnit.',
-        'Help start the company\'s first DevOps team.',
+        "Help start the company's first DevOps team.",
         'Maintained and upgraded CI/CD tools like TeamCity and Octopus Deploy.',
         'Introduced configuration management using Puppet and PowerShell DSC. Create and provision new environments on-demand for performance testing.',
         'Worked with technology leadership to review and explore new technology.',
@@ -162,9 +161,9 @@ export class JobService {
         'Develop consumer services for file (XML, ACH) inputs.',
         'Work with stakeholders and gather requirements for project management team.',
       ],
-    }
-  ]
-  constructor() { }
+    },
+  ];
+  constructor() {}
 
   getAllJobs(): Job[] {
     return this.jobList;

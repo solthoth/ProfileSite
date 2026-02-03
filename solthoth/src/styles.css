@@ -1,6 +1,6 @@
 /* Global design tokens and base styles */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
   --layout-max-width: 960px;
@@ -16,7 +16,12 @@
   --spacing-4xl: 60px;
 
   --color-bg: #f5f7fb;
-  --color-bg-gradient: linear-gradient(165deg, #f8fbff 0%, #eef2ff 45%, #fdfcff 100%);
+  --color-bg-gradient: linear-gradient(
+    165deg,
+    #f8fbff 0%,
+    #eef2ff 45%,
+    #fdfcff 100%
+  );
   --color-surface: #ffffff;
   --color-surface-muted: rgba(255, 255, 255, 0.82);
   --color-surface-accent: rgba(37, 99, 235, 0.08);
@@ -35,7 +40,7 @@
   --radius-md: 16px;
   --radius-sm: 12px;
 
-  --font-display: 'Inter', Roboto, 'Helvetica Neue', sans-serif;
+  --font-display: "Inter", Roboto, "Helvetica Neue", sans-serif;
 }
 
 * {

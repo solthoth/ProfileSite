@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [MatCardModule, RouterModule, CommonModule],
   templateUrl: './job.component.html',
-  styleUrl: './job.component.css'
+  styleUrl: './job.component.css',
 })
 export class JobComponent {
   @Input() job!: Job;
