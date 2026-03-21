@@ -11,7 +11,7 @@ export class JobService {
       title: 'Manager, Site Reliability Engineering',
       companyName: 'Shell Recharge Solutions',
       companyLink: 'https://www.shellrecharge.com/en-us/solutions',
-      dateRange: 'June 2021 - Current',
+      dateRange: 'June 2021 - June 2024',
       internalRange: 'October 2021',
       achivements: [
         'Worked as interim Cybersecurity Engineering Manager.',
