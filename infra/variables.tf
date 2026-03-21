@@ -6,7 +6,7 @@ variable "resource_group_name" {
 variable "location" {
   description = "Azure region where resources will be deployed."
   type        = string
-  default     = "East US"
+  default     = "West US 3"
 }
 
 variable "static_webapp_name" {
