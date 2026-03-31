@@ -89,11 +89,11 @@
 }
 
 .persona-tabs {
-  --mat-tab-header-active-label-text-color: var(--color-text-strong);
-  --mat-tab-header-inactive-label-text-color: var(--color-muted);
-  --mat-tab-header-active-ripple-color: rgba(37, 99, 235, 0.2);
-  --mat-tab-header-inactive-ripple-color: rgba(99, 102, 241, 0.2);
-  --mat-tab-header-pagination-icon-color: var(--color-muted);
+  --mat-tab-active-label-text-color: var(--color-text-strong);
+  --mat-tab-inactive-label-text-color: var(--color-muted);
+  --mat-tab-active-ripple-color: rgba(37, 99, 235, 0.2);
+  --mat-tab-inactive-ripple-color: rgba(99, 102, 241, 0.2);
+  --mat-tab-pagination-icon-color: var(--color-muted);
 }
 
 .persona-tabs::ng-deep .mat-mdc-tab .mdc-tab__content {

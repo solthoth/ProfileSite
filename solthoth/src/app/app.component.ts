@@ -7,7 +7,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     RouterModule,
     MatToolbarModule,

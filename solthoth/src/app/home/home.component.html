@@ -87,6 +87,8 @@
     </p>
   </div>
   <div class="experience-list">
-    <app-job *ngFor="let job of homeJobList" [job]="job"></app-job>
+    @for (job of homeJobList; track job) {
+      <app-job [job]="job"></app-job>
+    }
   </div>
 </section>
