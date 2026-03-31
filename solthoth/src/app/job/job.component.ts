@@ -5,10 +5,10 @@ import { Job } from '../job';
 import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'app-job',
-    imports: [MatCardModule, RouterModule],
-    templateUrl: './job.component.html',
-    styleUrl: './job.component.css'
+  selector: 'app-job',
+  imports: [MatCardModule, RouterModule],
+  templateUrl: './job.component.html',
+  styleUrl: './job.component.css',
 })
 export class JobComponent {
   @Input() job!: Job;

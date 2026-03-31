@@ -12,13 +12,11 @@
   --header-padding-top: clamp(var(--spacing-2xl), 8vw, var(--spacing-4xl));
   --header-padding-inline: var(--spacing-lg);
   --header-padding-bottom: var(--spacing-lg);
-  padding: var(--header-padding-top) var(--header-padding-inline) var(--header-padding-bottom);
+  padding: var(--header-padding-top) var(--header-padding-inline)
+    var(--header-padding-bottom);
   padding-top: calc(
-    var(--header-padding-top)
-    + max(
-        env(safe-area-inset-top, 0px),
-        constant(safe-area-inset-top, 0px)
-      )
+    var(--header-padding-top) +
+      max(env(safe-area-inset-top, 0px), constant(safe-area-inset-top, 0px))
   );
   overflow: visible;
 }

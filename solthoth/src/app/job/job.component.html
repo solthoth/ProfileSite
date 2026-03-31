@@ -3,7 +3,13 @@
     <div class="job-card__header">
       <div class="job-card__heading">
         <h3 class="job-card__title">{{ job.title }}</h3>
-        <a class="job-card__company" href="{{ job.companyLink }}" target="_blank" rel="noopener">{{ job.companyName }}</a>
+        <a
+          class="job-card__company"
+          href="{{ job.companyLink }}"
+          target="_blank"
+          rel="noopener"
+          >{{ job.companyName }}</a
+        >
       </div>
       <span class="job-card__dates">{{ job.dateRange }}</span>
     </div>
