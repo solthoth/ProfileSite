@@ -64,7 +64,7 @@
 
 .hero__contact a:hover {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 /* ---------- Status panel (signature element) ---------- */
@@ -87,7 +87,7 @@
 }
 
 .status-panel__prompt span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .status-panel__body {
@@ -185,14 +185,6 @@ main {
   border: 1px solid var(--line-strong);
   border-radius: 3px;
   color: var(--ink-soft);
-  transition:
-    border-color 0.15s ease,
-    color 0.15s ease;
-}
-
-.chip:hover {
-  border-color: var(--accent);
-  color: var(--accent);
 }
 
 /* ---------- Experience topology (3D) ---------- */
@@ -390,7 +382,7 @@ main {
   content: '›';
   position: absolute;
   left: 0;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .stage__sub {
@@ -489,7 +481,7 @@ main {
 }
 
 .footer a:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 /* ---------- Responsive ---------- */
