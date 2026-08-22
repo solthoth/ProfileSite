@@ -12,6 +12,9 @@ concurrency:
   group: deploy-app-dev-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     name: Build and Deploy
