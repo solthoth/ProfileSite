@@ -7,8 +7,23 @@
 /* ---------- Hero ---------- */
 
 .hero {
+  position: relative;
   padding: 64px 0 48px;
   text-align: left;
+}
+
+.hero canvas {
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero__mark,
+.hero__name,
+.hero__title,
+.status-panel,
+.hero__contact {
+  position: relative;
+  z-index: 1;
 }
 
 .hero__mark {

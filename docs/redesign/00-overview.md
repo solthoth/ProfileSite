@@ -1,6 +1,6 @@
 # Redesign direction: a live systems topology
 
-**Status:** direction approved for exploration, not yet built. This document is the reference for implementing it in later iterations.
+**Status:** in progress. Phase 1 (spike) and Phase 3 (hero ambient field) are built, see `src/three/HeroField.tsx`, `src/data/graph.ts`, `src/hooks/useWebGLCapable.ts`. Phase 4 (the experience-section camera flythrough) is not started. This document is the reference for continuing the build in later iterations, not a progress log; update the phase list below as work lands rather than adding status checkboxes here.
 
 ## Design read
 
@@ -69,18 +69,20 @@ Extending `.claude/skills/design-taste-frontend/`'s anti-tell list to this conce
 - No camera roll or aggressive FOV changes. Smooth, primarily translational movement. The goal is "flying through a system," not a rollercoaster.
 - No em-dashes, no AI-copy filler verbs, no fake-precise numbers, consistent with the rest of the site's existing copy discipline.
 
-## Phased roadmap (for later iterations, not built yet)
+## Phased roadmap
 
-1. **Spike.** Install `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`, `gsap`, `d3-force`. Confirm they resolve and build cleanly under this project's Vite 8 + React 19 + strict TypeScript setup. No visible change to the live site.
-2. **Data and capability layer.** A pure function deriving graph nodes/edges from `resume.ts` (no content duplication). WebGL support check, `prefers-reduced-motion` check, coarse device-capability heuristic. The lazy-mount wrapper that picks 3D vs. the existing 2D fallback.
-3. **Hero ambient field.** The smallest, lowest-risk, highest-visibility piece: the drifting node field behind the status panel. Ship and visually review this alone before touching the experience section.
-4. **Experience topology.** The full camera flythrough with the HUD achievement panel. The biggest and riskiest piece; budget a dedicated visual, performance, and accessibility review pass before calling it done, the same way the original resume-page build was screenshot-reviewed in both themes and at mobile width before shipping.
-5. **Hardening.** Lighthouse pass, bundle analysis, cross-browser and cross-device check, reduced-motion and keyboard-only walkthroughs.
+1. **Spike.** Done. `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`, `gsap`, `d3-force` installed and confirmed working under this project's Vite 8 + React 19 + strict TypeScript setup.
+2. **Data and capability layer.** Done, scoped down from the original plan: `src/data/graph.ts` derives role nodes (id, current flag) and chronological order from `resume.ts`. Skill nodes and skill-to-role edges were deliberately deferred rather than built on a guess, see the note in that file. `src/hooks/useWebGLCapable.ts` covers the WebGL/reduced-motion/viewport-width check; the lazy-mount wrapper lives directly in `Hero.tsx` (`React.lazy` + `Suspense`, gated on the hook).
+3. **Hero ambient field.** Done. `src/three/HeroField.tsx`, a sparse phyllotaxis-spiral scatter of the role nodes behind the hero text, GSAP-driven scale-in entrance plus slow idle rotation. Verified with a real headless-Chrome WebGL render (not just a compile check) in both color themes and confirmed the sub-560px path renders no `<canvas>` at all.
+4. **Experience topology.** Not started. The full camera flythrough with the HUD achievement panel, and the point where the skill-to-role mapping question from step 2 has to actually get resolved (see Open questions). The biggest and riskiest piece; budget a dedicated visual, performance, and accessibility review pass before calling it done, the same way this phase's own hero work was screenshot-reviewed before shipping.
+5. **Hardening.** Not started. Lighthouse pass, bundle analysis (the hero field's lazy chunk is already ~263kB gzipped, three.js/R3F/drei/gsap together; worth a closer look once the experience-section chunk adds to it), cross-browser and cross-device check, reduced-motion and keyboard-only walkthroughs.
 
 Each phase should land as its own reviewable change. Don't attempt the whole roadmap in one pass.
 
 ## Open questions for the next iteration
 
-- Exact node/edge visual language (sphere size scaling by tenure? line thickness by seniority?) needs a few real prototypes before committing, not decided from description alone.
+- **How skill-to-role edges actually get derived.** `resume.ts` has no structured link between a skill and the roles that used it, skills and experience are separate top-level arrays. Two real options for Phase 4: (a) skip skill nodes/edges entirely and keep skills as a 2D-only chip list, the graph stays role-nodes-only, or (b) derive edges by matching a skill's exact name as a substring of an achievement's text, which is a mechanical, verifiable derivation rather than an invented association, but needs a pass to check it doesn't produce misleading matches (a skill name that's a substring of an unrelated word, for instance). Not decided; whichever is picked, it must stay derived from the existing data, not hand-authored, or it'll drift out of sync with `carlos-barajas-resume.md` the way everything else here doesn't.
+- Exact node/edge visual language for the experience graph (sphere size scaling by tenure? line thickness by seniority?) needs a few real prototypes before committing, not decided from description alone.
 - Whether the skills-orbit view is always-on during the experience section or a toggled overlay, needs testing against actual readability.
 - Mobile treatment for the experience section specifically: full 2D fallback below a width threshold, or a simplified/non-interactive 3D render, needs a real device test to decide.
+- The hero field's node scatter (`seededPosition` in `HeroField.tsx`) was tuned by eye against one viewport size. Worth a pass across a few real breakpoints once the experience section exists, to keep the two 3D moments visually consistent.
