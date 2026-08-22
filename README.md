@@ -40,4 +40,4 @@ Commit messages follow [Conventional Commits](https://www.conventionalcommits.or
 
 ## Infrastructure
 
-[`infra/`](infra/) provisions the Azure Static Web App this site deploys to, via OpenTofu and the `azure-static-webapp-cicd-kit` module. See [`docs/migration/phase-4-cicd-infra.md`](docs/migration/phase-4-cicd-infra.md) for the current state of the CI/CD wiring.
+[`deploy/infra/dev/`](deploy/infra/dev/) and [`deploy/infra/prod/`](deploy/infra/prod/) each provision an Azure Static Web App via OpenTofu and the `azure-static-webapp-cicd-kit` module — dev deploys on every push to `main`, prod deploys when a GitHub Release is published. See [`CLAUDE.md`](CLAUDE.md#cicd-and-infrastructure) for the full wiring and [`docs/migration/phase-5-cutover.md`](docs/migration/phase-5-cutover.md) for current deploy status.

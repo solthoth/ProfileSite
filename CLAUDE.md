@@ -72,9 +72,43 @@ Vitest with the jsdom environment and Testing Library. Config lives in `vite.con
 
 ## CI/CD and infrastructure
 
-`.github/workflows/ci.yml` runs `pnpm lint`, `pnpm build`, `pnpm test` on push/PR to `main`. pnpm is pinned via the `packageManager` field in `package.json`, honored by both `corepack` locally and `pnpm/action-setup` in CI.
+Mirrors the pattern used across other bit-and-byte-ideas-adjacent repos (see
+[bit-and-byte-ideas-website](https://github.com/bit-and-byte-ideas/bit-and-byte-ideas-website)'s
+`deploy/infra/` and workflow layout) rather than a single combined pipeline:
 
-[`infra/`](infra/) provisions the Azure Static Web App via OpenTofu, sourcing the `azure-static-webapp-cicd-kit` module. Wiring the deploy/infra jobs into `ci.yml` for the new pnpm/Vite build (replacing the old Angular-shaped workflow) is tracked as Phase 4 in [`docs/migration/`](docs/migration/) — check that doc's status before assuming the deploy pipeline is fully wired up for this stack.
+- **`.github/workflows/ci.yml`** — `pnpm lint`, `pnpm build`, `pnpm test` on
+  push/PR to `main`. Build-only; doesn't touch infra or deploy.
+- **`deploy/infra/dev/` and `deploy/infra/prod/`** — separate OpenTofu roots,
+  each sourcing the `azure-static-webapp-cicd-kit`'s `azure-static-webapp`
+  module. `resource_group_name`/`static_webapp_name` are derived from
+  `project_name` + `environment` (`terraform.tfvars`, `project_name =
+  "solthoth-profilesite"`) as `rg-solthoth-profilesite-{env}` /
+  `swa-solthoth-profilesite-{env}`. The target resource group must already
+  exist in Azure — the module reads it via a data source, it doesn't create
+  one.
+- **`deploy-infra-dev.yaml` / `deploy-infra-prod.yaml`** — call the kit's
+  reusable `opentofu.yml` workflow per environment, each with its own
+  `working_directory` and Azure/backend identifiers pulled from GitHub
+  Actions **Variables** (`vars.*`, not secrets — none of these values are
+  sensitive under OIDC auth): `AZURE_CLIENT_ID_DEV`/`_PROD`,
+  `AZURE_TENANT_ID` (shared), `AZURE_SUBSCRIPTION_ID` (shared, no per-env
+  suffix in this repo), `TF_BACKEND_RESOURCE_GROUP`/`_STORAGE_ACCOUNT`
+  (shared), `TF_BACKEND_CONTAINER_DEV`/`_PROD`, `TF_BACKEND_KEY_DEV`/`_PROD`.
+  Both grant `permissions: { id-token: write, contents: read }` explicitly —
+  required for the reusable workflow's Azure OIDC login; this repo's default
+  token permissions are more restrictive than that.
+- **`deploy-app-dev.yaml`** — builds and deploys to the `dev` Static Web App
+  on every push to `main` (plus `workflow_dispatch` for previewing a branch).
+- **`deploy-app-prod.yaml`** — builds and deploys to `prod` **only when a
+  GitHub Release is published** — not on every push to `main`. Cut a release
+  to ship to production.
+- Each environment's `AZURE_STATIC_WEB_APPS_API_TOKEN` is a GitHub
+  Environment secret (`dev`/`prod` environments), sourced from that
+  environment's `deploy/infra/<env>` OpenTofu `api_key` output after the
+  first successful apply — it doesn't exist until then.
+- A custom domain (`solthoth.com`) isn't bound yet — `custom_domain` in
+  `deploy/infra/prod/terraform.tfvars` is `null` pending a CNAME delegation
+  record at the registrar; see `docs/migration/phase-5-cutover.md`.
 
 ## Development environment
 
