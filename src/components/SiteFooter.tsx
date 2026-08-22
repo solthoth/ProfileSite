@@ -1,4 +1,5 @@
 import { person } from '../data/resume'
+import { ThemeToggle } from './ThemeToggle'
 
 export function SiteFooter() {
   return (
@@ -6,7 +7,10 @@ export function SiteFooter() {
       <p>
         {person.name} · {person.location}
       </p>
-      <a href={`mailto:${person.email}`}>{person.email}</a>
+      <div className="footer__links">
+        <a href={`mailto:${person.email}`}>{person.email}</a>
+        <ThemeToggle />
+      </div>
     </footer>
   )
 }

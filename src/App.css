@@ -520,6 +520,26 @@ main {
   color: var(--accent-text);
 }
 
+.footer__links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.theme-toggle {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-faint);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--accent-text);
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 560px) {
@@ -577,6 +597,7 @@ main {
   }
 
   .skip-link,
+  .theme-toggle,
   .hero__contact button,
   .hero canvas,
   .topology,
