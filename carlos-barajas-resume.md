@@ -3,7 +3,6 @@
 **Platform Engineering & DevOps Leader**
 
 - **Location:** San Diego, CA
-- **Phone:** 619-261-6661
 - **Email:** carlos.barajas@proton.me
 - **LinkedIn:** https://www.linkedin.com/in/solthoth
 

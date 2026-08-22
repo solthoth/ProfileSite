@@ -26,9 +26,6 @@ export function Hero() {
           <a href={`mailto:${person.email}`}>{person.email}</a>
         </li>
         <li>
-          <a href={`tel:${person.phone.replace(/[^0-9+]/g, '')}`}>{person.phone}</a>
-        </li>
-        <li>
           <a href={person.linkedin} target="_blank" rel="noreferrer">
             linkedin.com/in/solthoth
           </a>

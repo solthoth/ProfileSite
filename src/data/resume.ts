@@ -36,7 +36,6 @@ export const person = {
   name: 'Carlos Barajas',
   title: 'Platform Engineering & DevOps Leader',
   location: 'San Diego, CA',
-  phone: '619-261-6661',
   email: 'carlos.barajas@proton.me',
   linkedin: 'https://www.linkedin.com/in/solthoth',
 }
