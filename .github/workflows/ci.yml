@@ -50,6 +50,11 @@ jobs:
     name: Infrastructure
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    # The reusable opentofu.yml workflow requests id-token: write for Azure
+    # OIDC login; the caller must explicitly grant at least that much.
+    permissions:
+      id-token: write
+      contents: read
     uses: bit-and-byte-ideas/azure-static-webapp-cicd-kit/.github/workflows/opentofu.yml@main
     with:
       working_directory: infra
