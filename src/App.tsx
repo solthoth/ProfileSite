@@ -21,7 +21,7 @@ function App() {
 
         <Section id="education" eyebrow="Education" title="Foundations">
           <p className="prose">
-            <strong>{education.school}</strong> — {education.degree}, {education.location}
+            <strong>{education.school}</strong>, {education.degree}, {education.location}
           </p>
         </Section>
 
