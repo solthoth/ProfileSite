@@ -1,6 +1,13 @@
 # ProfileSite Migration Plan
 
-This repository is being rebuilt from scratch, using
+**All 5 phases complete as of 2026-08-22.** Both `dev`
+(https://blue-forest-0fc96911e.7.azurestaticapps.net/) and `prod`
+(https://gray-pebble-08cf5171e.7.azurestaticapps.net/) are live. This doc
+and the phase docs are kept as a record of how the migration happened and
+why — see each phase doc's "History"/"Notes" sections for what deviated
+from the original plan and what's still open as optional follow-up.
+
+This repository was rebuilt from scratch, using
 [bit-and-byte-ideas/frontend-react-teamplate](https://github.com/bit-and-byte-ideas/frontend-react-teamplate)
 as the starting scaffold and
 [bit-and-byte-ideas/azure-static-webapp-cicd-kit](https://github.com/bit-and-byte-ideas/azure-static-webapp-cicd-kit)
@@ -43,23 +50,26 @@ canonical source of truth for content and **must never be deleted**.
 | 2     | [phase-2-content.md](phase-2-content.md)           | Rebuild the resume-showcase UI and content on the new scaffold — **complete**                    |
 | 3     | [phase-3-devx-tooling.md](phase-3-devx-tooling.md) | Bring devcontainer, pre-commit, editor, and CLAUDE.md docs in line with the new stack — **complete** |
 | 4     | [phase-4-cicd-infra.md](phase-4-cicd-infra.md)     | Update GitHub Actions CI and wire up the Azure Static Web App CI/CD kit for the new build output — **superseded by Phase 5's dev/prod restructure** |
-| 5     | [phase-5-cutover.md](phase-5-cutover.md)           | Remove the old Angular app, merge to `main`, verify production deploy — **dev live, prod ready pending a Release** |
+| 5     | [phase-5-cutover.md](phase-5-cutover.md)           | Remove the old Angular app, merge to `main`, verify production deploy — **complete, dev and prod both live** |
 
 ## Key decisions
 
 - **New app lives at repo root**, matching the template's own layout (flat
   `package.json`, `src/`, `public/` at the top level) rather than nested
-  under `solthoth/` as the Angular app was. Old app is removed in Phase 5
-  once the replacement is verified end-to-end (kept until then as a working
-  rollback and so `main`'s CI/deploy keeps functioning during the migration).
+  under `solthoth/` as the Angular app was. The old Angular app was removed
+  before Phase 5 even started (git history retains it if ever needed).
 - **Package manager: pnpm** (via corepack), **Node 24+**, matching the
   template's requirements — replacing npm/Node 20.
 - **Resume content stays hand-synced** from `carlos-barajas-resume.md` into a
-  typed TS data file (mirroring the old `JobService` pattern), not
-  auto-parsed from Markdown. Automated parsing is a possible future
-  enhancement, not in scope here — see Phase 2 notes.
-- **Infra module usage is already correct**: [`infra/main.tf`](../../infra/main.tf)
-  already sources `azure-static-webapp-cicd-kit`'s
-  `modules/azure-static-webapp`. Phase 4 verifies/adjusts it rather than
-  rebuilding it, and focuses on aligning the app-build/deploy workflow
-  (build output path, Node→pnpm) with the kit's reusable OpenTofu workflow.
+  typed TS data file (`src/data/resume.ts`), not auto-parsed from Markdown.
+  Automated parsing is a possible future enhancement, not in scope here —
+  see Phase 2 notes.
+- **Infra ended up restructured, not just adjusted**: Phase 4 built a
+  single `infra/` dir with a combined `ci.yml` infra+deploy job, matching
+  the original plan. Once that pipeline ran for the first time in Phase 5,
+  the user pointed at a different, proven pattern used across other repos
+  and had it rebuilt to match — `deploy/infra/{dev,prod}/` with separate
+  `deploy-infra-*.yaml`/`deploy-app-*.yaml` workflows, GitHub Actions
+  Variables instead of Secrets, and prod deploying only on a published
+  GitHub Release. See Phase 5's "History" section for the full story,
+  including three real bugs the first pipeline run surfaced along the way.

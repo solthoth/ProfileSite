@@ -1,6 +1,6 @@
 # Phase 5 — Cutover and decommission
 
-**Status:** Nearly complete — dev is live; prod is provisioned and ready, waiting on the user to publish a GitHub Release
+**Status:** Complete — dev and prod are both live
 
 ## Goal
 
@@ -53,19 +53,20 @@ new site deploys to Azure successfully.
 - [x] **`Deploy App (dev)`** succeeded. **Verified live**:
       https://blue-forest-0fc96911e.7.azurestaticapps.net/ returns
       `HTTP 200` and the correct `<title>Carlos Barajas</title>`.
-- [ ] **`Deploy App (prod)`** — not yet run. It only triggers on a
-      **published GitHub Release** (by design, matching the reference
-      pattern). Offered to cut a `v1.0.0` release now; user chose to do it
-      themselves when ready. Prod's infra (Static Web App
-      `swa-solthoth-profilesite-prod`, default hostname
-      `gray-pebble-08cf5171e.7.azurestaticapps.net`) is provisioned and its
-      deploy token is set — publishing a release is the only remaining
-      step to get prod live.
-- [ ] Check this phase's boxes off and commit as
-      `docs: mark phase 5 cutover complete` — holding until prod is
-      actually live (or the user says to close this out regardless).
-- [ ] Update [`docs/migration/README.md`](README.md) status table to show
-      all phases complete — same, holding.
+- [x] **`Deploy App (prod)`**: user published release
+      [`v0.0.1`](https://github.com/solthoth/ProfileSite/releases/tag/v0.0.1),
+      triggering `deploy-app-prod.yaml`. Waited on the `prod` environment's
+      required-reviewer gate, approved by the user, then succeeded.
+      **Verified live**: https://gray-pebble-08cf5171e.7.azurestaticapps.net/
+      returns `HTTP 200`, correct `<title>Carlos Barajas</title>` and the
+      expected static SPA shell (meta description, OG tags, font
+      preconnects matching `index.html` exactly — resume content itself
+      renders client-side, so it won't appear in a raw `curl`, which is
+      expected for this SPA).
+- [x] Checked this phase's boxes off and committed as
+      `docs: mark phase 5 cutover complete`.
+- [x] Updated [`docs/migration/README.md`](README.md) status table to show
+      all phases complete.
 
 ## History: what actually happened (deviated substantially from the plan)
 
@@ -106,21 +107,24 @@ chain of real, sequential problems, each fixed in turn:
       `carlos-barajas-resume.md`, `docs/`, `deploy/infra/`, and supporting
       root config — no Angular remnants.
 - [x] Dev Azure Static Web App serves the new resume site correctly.
-- [ ] **Production** Azure Static Web App serves the new resume site
-      correctly — infra is up, waiting on the user to publish a Release.
+- [x] Production Azure Static Web App serves the new resume site
+      correctly — live at
+      https://gray-pebble-08cf5171e.7.azurestaticapps.net/ as of release
+      `v0.0.1`.
 - [x] All commits from Phase 1 through Phase 5 follow Conventional Commits.
 
 ## Notes
 
-- **To finish**: publish a GitHub Release (any tag, e.g. `v1.0.0`) off
-  `main` — that alone triggers `deploy-app-prod.yaml`. Verify
-  `https://gray-pebble-08cf5171e.7.azurestaticapps.net/` afterward.
-- `solthoth.com` custom domain binding is intentionally deferred —
-  `deploy/infra/prod/terraform.tfvars` has `custom_domain = null`. Binding
-  it needs a CNAME delegation record at the domain registrar (DNS access
-  Claude doesn't have); flip it to `"solthoth.com"` and add the DNS record
-  once ready.
-- After prod is live, consider whether `master` and the other stale
-  long-lived branches (`ci-setup`, `job-history`, `modular-content`,
-  `fix/dependabot-security-updates`) should be cleaned up — not done as
-  part of this migration unless requested.
+- **Remaining, optional follow-up work** (not part of this migration's
+  scope, listed here so it isn't lost):
+  - `solthoth.com` custom domain binding — `deploy/infra/prod/terraform.tfvars`
+    has `custom_domain = null`. Binding it needs a CNAME delegation record
+    at the domain registrar (DNS access Claude doesn't have); flip it to
+    `"solthoth.com"` and add the DNS record once ready.
+  - Consider whether `master` and the other stale long-lived branches
+    (`ci-setup`, `job-history`, `modular-content`,
+    `fix/dependabot-security-updates`) should be cleaned up — not done as
+    part of this migration unless requested.
+  - The Node.js 20 deprecation warnings on several actions
+    (`actions/checkout@v4`, `pnpm/action-setup@v4`, etc.) are benign for
+    now but worth revisiting if/when those actions cut new major versions.
