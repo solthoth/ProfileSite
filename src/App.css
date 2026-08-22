@@ -4,6 +4,30 @@
   padding: 0 24px 96px;
 }
 
+/* ---------- Skip link ---------- */
+
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: 24px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus-visible {
+  top: 16px;
+}
+
 /* ---------- Hero ---------- */
 
 .hero {
@@ -57,14 +81,22 @@
   font-size: 14px;
 }
 
-.hero__contact a {
+.hero__contact a,
+.hero__contact button {
   text-decoration: none;
+  border: none;
   border-bottom: 1px solid var(--line-strong);
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
 }
 
-.hero__contact a:hover {
+.hero__contact a:hover,
+.hero__contact button:hover {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 /* ---------- Status panel (signature element) ---------- */
@@ -87,7 +119,7 @@
 }
 
 .status-panel__prompt span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .status-panel__body {
@@ -185,17 +217,13 @@ main {
   border: 1px solid var(--line-strong);
   border-radius: 3px;
   color: var(--ink-soft);
-  transition:
-    border-color 0.15s ease,
-    color 0.15s ease;
-}
-
-.chip:hover {
-  border-color: var(--accent);
-  color: var(--accent);
 }
 
 /* ---------- Experience topology (3D) ---------- */
+
+.experience__print-rail {
+  display: none;
+}
 
 .topology {
   position: relative;
@@ -390,7 +418,7 @@ main {
   content: '›';
   position: absolute;
   left: 0;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .stage__sub {
@@ -489,7 +517,27 @@ main {
 }
 
 .footer a:hover {
-  color: var(--accent);
+  color: var(--accent-text);
+}
+
+.footer__links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.theme-toggle {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-faint);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--accent-text);
 }
 
 /* ---------- Responsive ---------- */
@@ -518,5 +566,72 @@ main {
   .rail__company-head {
     flex-direction: column;
     gap: 4px;
+  }
+}
+
+/* ---------- Print ---------- */
+
+@media print {
+  /* Force the light palette regardless of dark mode/system preference -
+     printed output should read as ink on paper, not carry dark-mode
+     colors that waste toner and hurt legibility. Matches the specificity
+     of the dark-theme selectors in src/index.css (:root:not([data-theme=
+     'light']) and :root[data-theme='dark'], both 0-2-0) so this wins the
+     cascade instead of losing to a plain :root override. */
+  :root,
+  :root:not([data-theme='light']),
+  :root[data-theme='dark'] {
+    --ink: #14181f;
+    --ink-soft: #4b535f;
+    --ink-faint: #4b535f;
+    --paper: #ffffff;
+    --paper-raised: #ffffff;
+    --line: #d6dbd6;
+    --line-strong: #b7beb8;
+    --accent: #b5651d;
+    --accent-text: #954f16;
+    --status-ok: #3f7a5c;
+    --status-ok-text: #396e53;
+    --status-current: #b5651d;
+    color-scheme: light;
+  }
+
+  .skip-link,
+  .theme-toggle,
+  .hero__contact button,
+  .hero canvas,
+  .topology,
+  .pin-spacer {
+    display: none !important;
+  }
+
+  .status-panel {
+    box-shadow: none;
+  }
+
+  /* The 3D topology never renders every role's achievements at once (only
+     the node the camera is on), so this static rail - hidden on screen -
+     is what actually carries the full experience section to print. */
+  .experience__print-rail {
+    display: block;
+  }
+
+  /* .stage normally reveals via useInView (IntersectionObserver) as the
+     user scrolls it into the viewport. Print never scrolls - and the
+     print-only rail above is display:none on screen, so its stages never
+     intersect at all - so without this override every role would print
+     at its pre-reveal opacity: 0. Avoid the break at the role level, not
+     the company level - a company with several roles (e.g. Green Dot
+     Corp's three) is often taller than a page, and avoiding a break
+     across the whole company just pushes it to a fresh page and leaves
+     the rest of the previous page blank. */
+  .stage {
+    opacity: 1;
+    transform: none;
+    break-inside: avoid;
+  }
+
+  .page {
+    padding-bottom: 24px;
   }
 }

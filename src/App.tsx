@@ -9,9 +9,12 @@ import { education, interests, summary } from './data/resume'
 function App() {
   return (
     <div className="page">
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
       <Hero />
 
-      <main>
+      <main id="main-content">
         <Section id="summary" eyebrow="Summary" title="The short version">
           <p className="prose">{summary}</p>
         </Section>

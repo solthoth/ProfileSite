@@ -1,4 +1,4 @@
-import { careerStart, person, stack } from '../data/resume'
+import { careerStart, experience, person, stack } from '../data/resume'
 
 function yearsSince(start: Date) {
   const now = new Date()
@@ -14,7 +14,7 @@ export function StatusPanel() {
   const uptime = yearsSince(careerStart)
 
   const rows: [string, string][] = [
-    ['role', 'Sr. Manager, Platform Engineering'],
+    ['role', experience[0].roles[0].title],
     ['location', person.location],
     ['uptime', `${uptime}y in production systems`],
     ['stack', stack.join(' · ')],
