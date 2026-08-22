@@ -43,7 +43,7 @@ canonical source of truth for content and **must never be deleted**.
 | 2     | [phase-2-content.md](phase-2-content.md)           | Rebuild the resume-showcase UI and content on the new scaffold — **complete**                    |
 | 3     | [phase-3-devx-tooling.md](phase-3-devx-tooling.md) | Bring devcontainer, pre-commit, editor, and CLAUDE.md docs in line with the new stack — **complete** |
 | 4     | [phase-4-cicd-infra.md](phase-4-cicd-infra.md)     | Update GitHub Actions CI and wire up the Azure Static Web App CI/CD kit for the new build output — **superseded by Phase 5's dev/prod restructure** |
-| 5     | [phase-5-cutover.md](phase-5-cutover.md)           | Remove the old Angular app, merge to `main`, verify production deploy — **in progress**, blocked on Azure AD config |
+| 5     | [phase-5-cutover.md](phase-5-cutover.md)           | Remove the old Angular app, merge to `main`, verify production deploy — **dev live, prod ready pending a Release** |
 
 ## Key decisions
 
