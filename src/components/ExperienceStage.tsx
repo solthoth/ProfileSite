@@ -1,5 +1,7 @@
 import type { RoleStage } from '../data/resume'
 import { useInView } from '../hooks/useInView'
+import { AchievementList } from './AchievementList'
+import { StatusBadge } from './StatusBadge'
 
 export function ExperienceStage({ role }: { role: RoleStage }) {
   const { ref, inView } = useInView<HTMLLIElement>()
@@ -10,25 +12,10 @@ export function ExperienceStage({ role }: { role: RoleStage }) {
       <div className="stage__content">
         <div className="stage__meta">
           <h4 className="stage__title">{role.title}</h4>
-          <span className={`badge ${role.current ? 'badge--current' : 'badge--ok'}`}>
-            {role.current ? '● current' : '✓ complete'}
-          </span>
+          <StatusBadge current={Boolean(role.current)} />
         </div>
         <p className="stage__range">{role.range}</p>
-        <ul className="stage__achievements">
-          {role.achievements.map((achievement) => (
-            <li key={achievement.text}>
-              {achievement.text}
-              {achievement.subItems && (
-                <ul className="stage__sub">
-                  {achievement.subItems.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
+        <AchievementList achievements={role.achievements} />
       </div>
     </li>
   )
