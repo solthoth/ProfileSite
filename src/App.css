@@ -83,10 +83,14 @@
 
 .status-panel__row {
   display: grid;
-  grid-template-columns: 74px 1fr;
+  grid-template-columns: 74px minmax(0, 1fr);
   gap: 12px;
   font-family: var(--font-mono);
   font-size: 14px;
+}
+
+.status-panel__row dd {
+  overflow-wrap: break-word;
 }
 
 .status-panel__row dt {
@@ -423,7 +427,7 @@ main {
   }
 
   .status-panel__row {
-    grid-template-columns: 64px 1fr;
+    grid-template-columns: 64px minmax(0, 1fr);
   }
 
   .rail__roles {
