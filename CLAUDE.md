@@ -6,8 +6,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ProfileSite is Carlos Barajas's resume showcase, deployed at solthoth.com. It's a single long-scroll React page (no router) rendering the content of [`carlos-barajas-resume.md`](carlos-barajas-resume.md) — the canonical source of truth for all resume content, never to be deleted. The app itself lives at the repo root (not in a subdirectory).
 
-This repo was migrated from an Angular app to this React/Vite stack; see [`docs/migration/`](docs/migration/) for the phased migration plan and its status if anything looks unfinished or inconsistent.
-
 ## Stack
 
 Vite + React 19 + TypeScript, scaffolded from [bit-and-byte-ideas/frontend-react-teamplate](https://github.com/bit-and-byte-ideas/frontend-react-teamplate). Package manager is **pnpm** (managed via Corepack — `corepack enable pnpm` if missing).
@@ -104,9 +102,11 @@ Mirrors the pattern used across other bit-and-byte-ideas-adjacent repos (see
   to ship to production.
 - Each environment's `AZURE_STATIC_WEB_APPS_API_TOKEN` is a GitHub
   Environment secret (`dev`/`prod` environments), sourced from that
-  environment's `deploy/infra/<env>` OpenTofu `api_key` output after the
-  first successful apply — it doesn't exist until then.
+  environment's `deploy/infra/<env>` OpenTofu `api_key` output.
+- Both environments are live: dev auto-deploys on every push to `main`,
+  prod deploys on published releases (see `git tag -l` / GitHub Releases
+  for the current version).
 - A custom domain (`solthoth.com`) isn't bound yet — `custom_domain` in
   `deploy/infra/prod/terraform.tfvars` is `null` pending a CNAME delegation
-  record at the registrar; see `docs/migration/phase-5-cutover.md`.
+  record at the registrar.
 
