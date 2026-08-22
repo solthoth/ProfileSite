@@ -59,6 +59,8 @@ Uses TS project references — the root `tsconfig.json` is just a solution file 
 
 Vitest with the jsdom environment and Testing Library. Config lives in `vite.config.ts` under the `test` key — note `include: ['src/**/*.{test,spec}.{ts,tsx}']` is deliberately scoped to `src/`, not the default. `src/setupTests.ts` registers `@testing-library/jest-dom` matchers. `src/App.test.tsx` has smoke tests asserting the hero renders and every experience/earlier-experience entry appears.
 
+Playwright covers end-to-end and scroll/animation-driven behavior under `e2e/`, configured in `playwright.config.ts` (`pnpm test:e2e`, `pnpm test:e2e:ui`). This exists specifically because headless Chrome's one-shot screenshot capture doesn't reliably tick `requestAnimationFrame`-driven work — GSAP `ScrollTrigger` tweens, React Three Fiber's `useFrame` loop — so verifying anything in `src/three/` beyond a static render requires a real browser's event loop, not a jsdom or single-screenshot check.
+
 ## Commit hygiene
 
 - **Conventional Commits** are enforced. `commitlint.config.js` extends `@commitlint/config-conventional`.
