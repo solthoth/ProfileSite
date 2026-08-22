@@ -1,46 +1,49 @@
-# Custom Files
+# Custom files
 .DS_Store
 PR_TITLE.txt
 PR.md
 
 # Claude
 .claude/settings.local.json
+.claude/worktrees/
 
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,angular
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,angular
-
-### Angular ###
-## Angular ##
-# compiled output
-dist/
-tmp/
-app/**/*.js
-app/**/*.js.map
-
-# dependencies
+# Node / pnpm
 node_modules/
-bower_components/
-package-lock.json
+npm-debug.log*
+pnpm-debug.log*
+*.local
+
+# Vite / build output
+dist/
+dist-ssr/
+coverage/
+
+# Logs
+logs
+*.log
+
+# OpenTofu / Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
 
 # IDEs and editors
 .idea/
-
-# misc
-.sass-cache/
-connect.lock/
-coverage/
-libpeerconnection.log/
-npm-debug.log
-testem.log
-typings/
-.angular/
-
-# e2e
-e2e/*.js
-e2e/*.map
-
-# System Files
-.DS_Store/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 ### VisualStudioCode ###
 .vscode/*
@@ -55,10 +58,3 @@ e2e/*.map
 
 # Built Visual Studio Code Extensions
 *.vsix
-
-### VisualStudioCode Patch ###
-# Ignore all local history of files
-.history
-.ionide
-
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,angular
