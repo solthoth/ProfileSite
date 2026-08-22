@@ -2,102 +2,80 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## Project overview
 
-ProfileSite is an Angular 17 application showcasing professional work experience through a job listing interface. The application uses standalone components (no NgModules), Angular Material for UI, and supports server-side rendering via Express.
+ProfileSite is Carlos Barajas's resume showcase, deployed at solthoth.com. It's a single long-scroll React page (no router) rendering the content of [`carlos-barajas-resume.md`](carlos-barajas-resume.md) — the canonical source of truth for all resume content, never to be deleted. The app itself lives at the repo root (not in a subdirectory).
 
-## Development Commands
+This repo was migrated from an Angular app to this React/Vite stack; see [`docs/migration/`](docs/migration/) for the phased migration plan and its status if anything looks unfinished or inconsistent.
 
-All commands should be run from the `solthoth/` directory:
+## Stack
 
-```bash
-cd solthoth
-```
+Vite + React 19 + TypeScript, scaffolded from [bit-and-byte-ideas/frontend-react-teamplate](https://github.com/bit-and-byte-ideas/frontend-react-teamplate). Package manager is **pnpm** (managed via Corepack — `corepack enable pnpm` if missing).
 
-- **Install dependencies**: `npm install`
-- **Development server**: `npm start` (serves on `http://0.0.0.0:4200`)
-- **Build for production**: `npm run build`
-- **Build with watch mode**: `npm run watch`
-- **Run tests**: `npm test` (Karma/Jasmine)
-- **SSR production server**: `npm run serve:ssr:solthoth` (serves built SSR app on port 4000)
+## Commands
 
-Note: Tests are currently commented out in CI (see `.github/workflows/ci.yaml:19`).
+- `pnpm dev` — start the Vite dev server with HMR.
+- `pnpm build` — type-check the project (`tsc -b`) and produce a production bundle in `dist/`. The `tsc -b` step is gating: type errors fail the build.
+- `pnpm lint` — run ESLint across the repo using the flat-config in `eslint.config.js`.
+- `pnpm typecheck` — `tsc -b` only (the type-check half of `build`).
+- `pnpm test` — run the Vitest unit suite once. `pnpm test:watch` for watch mode.
+- `pnpm preview` — serve the built `dist/` locally to sanity-check the production output.
+
+These scripts are the single source of truth: the local pre-commit hooks and the CI workflow both invoke them, so a green commit and a green CI run can't disagree. Change behavior by editing the script in `package.json`, not by duplicating flags in a hook or workflow.
 
 ## Architecture
 
-### Application Structure
+### Resume content and data model
 
-The application follows Angular 17's standalone component pattern with dependency injection via the `inject()` function rather than constructor injection.
+Resume content is hand-transcribed into [`src/data/resume.ts`](src/data/resume.ts), typed as `Achievement`, `RoleStage`, `ExperienceEntry`, `EarlierRole`, and `SkillCategory`. It must be kept in sync with `carlos-barajas-resume.md` by hand — there's no automated parsing. When the resume changes, update both files together. Every fact rendered in the UI should trace back to the Markdown file; don't invent content.
 
-**Core Components:**
+### Components
 
-- `AppComponent` - Root component with Material toolbar and router outlet
-- `HomeComponent` - Main listing page displaying all jobs
-- `JobComponent` - Reusable card component for individual job entries
-- `JobDetailsComponent` - Detail view for a specific job (route: `/details/:id`)
+- [`App.tsx`](src/App.tsx) — assembles the page: `Hero`, then `Section`-wrapped Summary/Skills/Experience/Education/Interests, then `SiteFooter`. Summary, Education, and Interests are simple enough to stay inline rather than their own components.
+- [`Hero.tsx`](src/components/Hero.tsx) + [`StatusPanel.tsx`](src/components/StatusPanel.tsx) — the name/title header and the signature CLI-style status panel (computes a live "years in production systems" figure from `careerStart` in `resume.ts`).
+- [`Section.tsx`](src/components/Section.tsx) — shared eyebrow + heading wrapper used by most sections.
+- [`Skills.tsx`](src/components/Skills.tsx) — renders `skills` as grouped chip lists.
+- [`Experience.tsx`](src/components/Experience.tsx) + [`ExperienceStage.tsx`](src/components/ExperienceStage.tsx) — the experience section renders as a CI/CD-pipeline-style rail: each employer is a stage group (`<ol className="rail">`), each role within it a stage (`<ol className="rail__roles">`) with a status badge ("current" vs. "complete") that animates in via `useInView` ([`src/hooks/useInView.ts`](src/hooks/useInView.ts), `IntersectionObserver`-based, guarded for environments without it).
+- [`SiteFooter.tsx`](src/components/SiteFooter.tsx).
 
-**Routing:**
+No router. The old Angular app's list+detail split was an artifact of Angular's routing defaults, not something the resume content needs — every achievement is already shown inline.
 
-- `/` - HomeComponent (job listing)
-- `/details/:id` - JobDetailsComponent (job detail view)
+### Design system
 
-Routes defined in [app.routes.ts](solthoth/src/app/app.routes.ts).
+Tokens (light/dark aware, `prefers-color-scheme` + `data-theme` override) live in [`src/index.css`](src/index.css); layout and component styles in [`src/App.css`](src/App.css). Direction is an "infrastructure console" aesthetic grounded in the subject's actual domain (platform engineering / CI/CD) rather than a generic portfolio look:
 
-### Data Model
+- Type: Newsreader (display serif) + IBM Plex Sans (body) + IBM Plex Mono (status/data/labels only), loaded via Google Fonts `<link>` tags in `index.html`.
+- Color: warm ink/paper neutrals with one copper accent and muted status green/amber for the CI-style badges — not the near-black + neon-terminal look.
+- Reading measure ~760px (`--measure`), single responsive breakpoint at 560px.
 
-Job data is currently **hardcoded** in [JobService](solthoth/src/app/job.service.ts:9-166) as an in-memory array. The `Job` interface includes:
+When editing CSS, watch for selector-specificity collisions between type-based and class-based selectors (e.g. `.section` vs `h2`) — see the `frontend-design` skill (`.claude/skills/frontend-design/`) for the fuller design process this app was built with.
 
-- `id`: UUID string
-- `title`, `companyName`, `companyLink`
-- `dateRange`, `internalRange`: String dates (not Date objects)
-- `achivements`: Array of accomplishment strings
-- `details`: Optional additional details array
+### TypeScript layout
 
-### Styling System
+Uses TS project references — the root `tsconfig.json` is just a solution file and references two real configs:
 
-Global design tokens are defined in [styles.css](solthoth/src/styles.css:5-39) using CSS custom properties:
+- `tsconfig.app.json` — covers `src/` (browser code). Bundler-mode resolution, `verbatimModuleSyntax`, `noUnusedLocals`/`noUnusedParameters`, and `erasableSyntaxOnly` are all on: type-only imports must use `import type`, unused symbols fail the build, and TS-only syntax that can't be erased (enums, namespaces, parameter properties) is rejected. Prefer plain unions/objects over `enum`.
+- `tsconfig.node.json` — covers tooling files (`vite.config.ts`).
 
-- Layout: `--layout-max-width: 960px`
-- Spacing scale: `--spacing-{2xs,xs,sm,md,lg,xl,2xl,3xl,4xl}`
-- Color system: Primary blue (`#2563eb`), secondary indigo (`#6366f1`)
-- Typography: Inter font family via `--font-display`
+### Testing
 
-Components use these tokens for consistent spacing and theming. The app uses Angular Material's indigo-pink prebuilt theme.
+Vitest with the jsdom environment and Testing Library. Config lives in `vite.config.ts` under the `test` key — note `include: ['src/**/*.{test,spec}.{ts,tsx}']` is deliberately scoped to `src/`, not the default. `src/setupTests.ts` registers `@testing-library/jest-dom` matchers. `src/App.test.tsx` has smoke tests asserting the hero renders and every experience/earlier-experience entry appears.
 
-### Server-Side Rendering
+## Commit hygiene
 
-SSR is configured via [server.ts](solthoth/server.ts) using Angular's CommonEngine with Express. The server:
+- **Conventional Commits** are enforced. `commitlint.config.js` extends `@commitlint/config-conventional`.
+- **pre-commit framework** (`.pre-commit-config.yaml`) wires local hooks:
+  - `commit-msg` stage → `pnpm exec commitlint --edit` validates the message.
+  - `pre-commit` stage → `eslint --fix` on staged JS/TS files (auto-fixing), then `pnpm typecheck` and `pnpm test` (whole-repo, matching CI).
+- New contributors must run `pre-commit install --hook-type pre-commit --hook-type commit-msg` once after cloning.
+- **Do not bypass with `--no-verify`.** A Claude PreToolUse hook (`.claude/hooks/block-no-verify.sh`, wired in `.claude/settings.json`) rejects `git commit --no-verify` and `-n`. Fix the underlying hook failure instead.
 
-- Serves static files from `dist/solthoth/browser/`
-- Renders Angular routes server-side
-- Runs on port 4000 (configurable via `PORT` env var)
-- Includes placeholder for REST API endpoints at line 21
+## CI/CD and infrastructure
 
-### TypeScript Configuration
+`.github/workflows/ci.yml` runs `pnpm lint`, `pnpm build`, `pnpm test` on push/PR to `main`. pnpm is pinned via the `packageManager` field in `package.json`, honored by both `corepack` locally and `pnpm/action-setup` in CI.
 
-Strict mode enabled in [tsconfig.json](solthoth/tsconfig.json:7-11) with:
+[`infra/`](infra/) provisions the Azure Static Web App via OpenTofu, sourcing the `azure-static-webapp-cicd-kit` module. Wiring the deploy/infra jobs into `ci.yml` for the new pnpm/Vite build (replacing the old Angular-shaped workflow) is tracked as Phase 4 in [`docs/migration/`](docs/migration/) — check that doc's status before assuming the deploy pipeline is fully wired up for this stack.
 
-- `strict: true`
-- `noImplicitReturns: true`
-- `noFallthroughCasesInSwitch: true`
-- Angular strict templates enabled
+## Development environment
 
-Target: ES2022 with ES2022 modules.
-
-## CI/CD
-
-GitHub Actions workflow (`.github/workflows/ci.yaml`) runs on push/PR:
-
-1. Build job: `npm ci` → `npm run build` → upload browser artifacts
-2. Deploy job (main branch only): Downloads artifacts → FTP deploy to production
-
-The default branch for PRs is `master` (not `main`), but deployment triggers on `main`.
-
-## Development Environment
-
-DevContainer configuration available at `.devcontainer/devcontainer.json` with:
-
-- Node.js 20 TypeScript image
-- Angular CLI pre-installed
-- Azure CLI, Prettier, pre-commit hooks
-- Post-create command runs `npm install` in solthoth/
+DevContainer configuration at `.devcontainer/devcontainer.json`: Node 24 TypeScript image, pnpm via Corepack (`postCreateCommand` runs `pnpm install` at repo root), Azure CLI, OpenTofu, GitHub CLI, pre-commit, and Ollama (used by `scripts/pr-draft-ai.sh` for local AI-drafted PR descriptions).
