@@ -16,8 +16,12 @@ new site deploys to Azure successfully.
 
 ## Steps
 
-- [ ] Delete `solthoth/` (old Angular app) entirely — git history retains it
-      if it's ever needed again.
+- [x] Delete `solthoth/` (old Angular app) entirely — git history retains it
+      if it's ever needed again. **Done early**, right after Phase 1 was
+      accepted (commit `chore: remove legacy angular app` on
+      `migration/react-template`), at the user's request. Also pruned the
+      stale `.claude/worktrees/objective-haslett` worktree the user removed
+      by hand.
 - [ ] Remove any now-dead root files left over from the Angular era (double
       check nothing in Phase 1–4 still references `solthoth/`).
 - [ ] Full clean-room check: fresh `pnpm install`, `pnpm lint`, `pnpm test`,
