@@ -1,14 +1,16 @@
 :root {
   --ink: #14181f;
   --ink-soft: #4b535f;
-  --ink-faint: #8b93a0;
+  --ink-faint: #636a75;
   --paper: #ecefec;
   --paper-raised: #ffffff;
   --line: #d6dbd6;
   --line-strong: #b7beb8;
   --accent: #b5651d;
+  --accent-text: #954f16;
   --accent-soft: #e7c9a6;
   --status-ok: #3f7a5c;
+  --status-ok-text: #396e53;
   --status-ok-bg: #e4efe8;
   --status-current: #b5651d;
   --status-current-bg: #f3e4d2;
@@ -34,14 +36,16 @@
   @media (prefers-color-scheme: dark) {
     --ink: #ecede8;
     --ink-soft: #a9b0a8;
-    --ink-faint: #6b726c;
+    --ink-faint: #8b938e;
     --paper: #14171a;
     --paper-raised: #1b1f22;
     --line: #2a2f31;
     --line-strong: #3a4043;
     --accent: #d89a4e;
+    --accent-text: #d89a4e;
     --accent-soft: rgba(216, 154, 78, 0.16);
     --status-ok: #6fae87;
+    --status-ok-text: #6fae87;
     --status-ok-bg: rgba(111, 174, 135, 0.14);
     --status-current: #d89a4e;
     --status-current-bg: rgba(216, 154, 78, 0.16);
@@ -54,14 +58,16 @@
 :root[data-theme='dark'] {
   --ink: #ecede8;
   --ink-soft: #a9b0a8;
-  --ink-faint: #6b726c;
+  --ink-faint: #8b938e;
   --paper: #14171a;
   --paper-raised: #1b1f22;
   --line: #2a2f31;
   --line-strong: #3a4043;
   --accent: #d89a4e;
+  --accent-text: #d89a4e;
   --accent-soft: rgba(216, 154, 78, 0.16);
   --status-ok: #6fae87;
+  --status-ok-text: #6fae87;
   --status-ok-bg: rgba(111, 174, 135, 0.14);
   --status-current: #d89a4e;
   --status-current-bg: rgba(216, 154, 78, 0.16);
