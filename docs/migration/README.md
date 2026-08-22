@@ -39,7 +39,7 @@ canonical source of truth for content and **must never be deleted**.
 
 | Phase | Doc                                                | Goal                                                                                             |
 | ----- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| 1     | [phase-1-scaffold.md](phase-1-scaffold.md)         | Stand up the React/Vite scaffold from the template at repo root                                  |
+| 1     | [phase-1-scaffold.md](phase-1-scaffold.md)         | Stand up the React/Vite scaffold from the template at repo root — **complete**                   |
 | 2     | [phase-2-content.md](phase-2-content.md)           | Rebuild the resume-showcase UI and content on the new scaffold                                   |
 | 3     | [phase-3-devx-tooling.md](phase-3-devx-tooling.md) | Bring devcontainer, pre-commit, editor, and CLAUDE.md docs in line with the new stack            |
 | 4     | [phase-4-cicd-infra.md](phase-4-cicd-infra.md)     | Update GitHub Actions CI and wire up the Azure Static Web App CI/CD kit for the new build output |
