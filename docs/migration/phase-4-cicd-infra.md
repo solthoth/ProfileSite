@@ -1,6 +1,15 @@
 # Phase 4 — CI/CD and infrastructure
 
-**Status:** Complete
+**Status:** Complete (superseded — see note)
+
+> **Superseded during Phase 5.** Everything below describes the
+> single-environment `infra/` + combined `ci.yml` infra/deploy jobs this
+> phase originally built. Once that pipeline actually ran for the first
+> time in Phase 5, the user pointed at a different, proven pattern used
+> across other repos and had it rebuilt to match: `deploy/infra/{dev,prod}/`
+> and separate `deploy-infra-*.yaml`/`deploy-app-*.yaml` workflows. See
+> [phase-5-cutover.md](phase-5-cutover.md) for what actually shipped and
+> current status. This doc is kept as-is for history.
 
 ## Goal
 
