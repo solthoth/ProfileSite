@@ -3,7 +3,7 @@
 {
   "name": "Node.js & TypeScript",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24-bookworm",
 
   "mounts": [
     "source=/run/host-services/ssh-auth.sock,target=/ssh-agent,type=bind"
@@ -18,8 +18,6 @@
     "ghcr.io/devcontainers-extra/features/apt-packages:1": {
       "packages": "zstd"
     },
-    "ghcr.io/devcontainers-extra/features/angular-cli:2": {},
-    "ghcr.io/devcontainers-community/npm-features/prettier:1": {},
     "ghcr.io/devcontainers-extra/features/pre-commit:2": {},
     "ghcr.io/devcontainers/features/azure-cli:1": {},
     "ghcr.io/devcontainers/features/docker-in-docker:3": {},
@@ -35,7 +33,7 @@
   "forwardPorts": [11434],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "cd solthoth && npm install",
+  "postCreateCommand": "corepack enable pnpm && pnpm install",
   "postStartCommand": ".devcontainer/post-start.sh",
 
   // Configure tool-specific properties.
@@ -43,7 +41,7 @@
     "vscode": {
       "extensions": [
         "tal7aouy.icons",
-        "angular.ng-template",
+        "dbaeumer.vscode-eslint",
         "ms-azuretools.vscode-docker",
         "motivesoft.vscode-uuid-generator",
         "anthropic.claude-code"
