@@ -1,9 +1,22 @@
+import { lazy, Suspense } from 'react'
 import { person } from '../data/resume'
+import { useWebGLCapable } from '../hooks/useWebGLCapable'
 import { StatusPanel } from './StatusPanel'
 
+const HeroField = lazy(() =>
+  import('../three/HeroField').then((module) => ({ default: module.HeroField })),
+)
+
 export function Hero() {
+  const webGLCapable = useWebGLCapable()
+
   return (
     <header className="hero">
+      {webGLCapable && (
+        <Suspense fallback={null}>
+          <HeroField />
+        </Suspense>
+      )}
       <p className="hero__mark">solthoth.com</p>
       <h1 className="hero__name">{person.name}</h1>
       <p className="hero__title">{person.title}</p>
