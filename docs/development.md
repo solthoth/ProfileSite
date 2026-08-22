@@ -25,6 +25,8 @@ pnpm dev
 | `pnpm typecheck` | Type-check only (`tsc -b`), no build output. |
 | `pnpm test` | Run the Vitest unit suite once. |
 | `pnpm test:watch` | Run Vitest in watch mode. |
+| `pnpm test:e2e` | Run the Playwright end-to-end suite once (headless, starts its own dev server). |
+| `pnpm test:e2e:ui` | Run the Playwright suite in UI mode for interactive debugging. |
 
 These scripts are the single source of truth: the local pre-commit hooks and the CI workflow both invoke them directly, so a commit that passes locally can't disagree with what CI reports.
 
@@ -33,6 +35,10 @@ These scripts are the single source of truth: the local pre-commit hooks and the
 Tests run with [Vitest](https://vitest.dev/) in a jsdom environment, using React Testing Library. Configuration lives in `vite.config.ts` under the `test` key; note that `include` is scoped to `src/**/*.{test,spec}.{ts,tsx}` rather than Vitest's default. `src/setupTests.ts` registers `@testing-library/jest-dom` matchers.
 
 `src/App.test.tsx` has smoke tests asserting the hero renders and that every experience/earlier-experience entry from `resume.ts` appears on the page.
+
+### End-to-end tests
+
+[Playwright](https://playwright.dev/) drives a real browser under `e2e/`, configured in `playwright.config.ts`. This exists because headless Chrome's one-shot screenshot capture doesn't reliably tick `requestAnimationFrame`-driven work — GSAP tweens, React Three Fiber's `useFrame` loop, `IntersectionObserver` reveals — so anything scroll- or animation-driven needs a real browser's event loop to verify correctly. `pnpm test:e2e` starts its own dev server (`webServer` in the config) and runs against it; run `pnpm exec playwright install --with-deps chromium` once beforehand to fetch the browser binary. CI runs the same suite in a dedicated `e2e` job.
 
 ## Commit conventions
 
