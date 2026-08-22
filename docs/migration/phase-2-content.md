@@ -1,6 +1,6 @@
 # Phase 2 — Resume content and UI
 
-**Status:** Complete, pending user visual review
+**Status:** Complete, visually reviewed
 
 ## Goal
 
@@ -55,15 +55,38 @@ content from [`carlos-barajas-resume.md`](../../carlos-barajas-resume.md).
 - [x] Check this phase's boxes off and commit as
       `docs: mark phase 2 content complete`.
 
-## Not done in this phase
+## Visual review (added after initial "complete")
 
-- **No browser screenshot / visual QA.** This environment has no
-  display/screenshot access (`screencapture` failed with "could not create
-  image from display" — headless). Design correctness was reasoned through
-  from the CSS and component structure, not visually confirmed. **Run
-  `pnpm dev` locally and look at it before treating this phase as truly
-  done** — check responsive behavior, the scroll-reveal animation on the
-  experience rail, and both light/dark color schemes.
+Screen-recording permission was fixed mid-phase, enabling an actual browser
+review via headless Chrome + macOS `screencapture`. That surfaced two real
+bugs, fixed in a follow-up commit
+(`fix(resume): strip default markers from ol, fix status panel grid overflow`):
+
+- The global list reset (`src/index.css`) only targeted `ul`, not `ol`. The
+  experience rail uses `ol` for companies and roles, so the browser's
+  default "1. 2. 3." numbering was rendering on top of the custom
+  dot/rail styling.
+- `.status-panel__row` used a bare `1fr` grid track, which doesn't shrink
+  below its content's intrinsic width — a classic CSS Grid gotcha. Fixed
+  with `minmax(0, 1fr)` so status values wrap instead of overflowing on
+  narrow viewports.
+
+Verified via screenshots: full page in dark mode, full page in light mode,
+and a ~500px mobile width (see note below on why 500px rather than a true
+~390px phone width). Hero, status panel, skills grid, the full experience
+pipeline rail (all 5 companies, badges, sub-bullets), earlier experience,
+education, interests, and footer all confirmed rendering correctly in both
+color schemes.
+
+**Headless-Chrome caveat**: this sandbox's headless Chrome has a rendering
+floor somewhere between 390–500px `--window-size` — below it, layout runs
+at a wider viewport than requested while the output PNG is still cropped to
+the requested size, making correctly-wrapping text look like an overflow
+bug. Confirmed with a trivial static HTML file (no app CSS involved) before
+concluding it wasn't a real issue. 500px was used as the narrow-viewport
+proxy instead; true sub-500px phone widths (e.g. 375–430px) haven't been
+screenshotted, though the CSS at that range is the same flexbox/grid
+wrapping already verified at 500px, so risk is low.
 
 ## Acceptance criteria
 
@@ -72,7 +95,10 @@ content from [`carlos-barajas-resume.md`](../../carlos-barajas-resume.md).
 - [x] Every fact in the UI traces back to `carlos-barajas-resume.md` — no
       invented content.
 - [x] `pnpm build`, `pnpm lint`, `pnpm test` all pass.
-- [ ] **User has visually reviewed the site locally** — not yet confirmed.
+- [x] **Visually reviewed via headless Chrome screenshots this session**
+      (dark, light, ~500px mobile) at the user's request, two real bugs
+      found and fixed. User has not yet looked at it themselves in a real
+      browser — worth a quick `pnpm dev` glance, but not blocking.
 
 ## Notes
 
