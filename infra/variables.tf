@@ -1,12 +1,6 @@
 variable "resource_group_name" {
-  description = "Name of the Azure resource group to create."
+  description = "Name of the existing Azure resource group to deploy into. Must already exist; the module reads it via a data source and derives the Static Web App's location from it."
   type        = string
-}
-
-variable "location" {
-  description = "Azure region where resources will be deployed."
-  type        = string
-  default     = "West US 3"
 }
 
 variable "static_webapp_name" {

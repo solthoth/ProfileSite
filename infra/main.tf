@@ -6,7 +6,6 @@ module "static_webapp" {
   source = "git::https://github.com/bit-and-byte-ideas/azure-static-webapp-cicd-kit.git//modules/azure-static-webapp?ref=main"
 
   resource_group_name = var.resource_group_name
-  location            = var.location
   static_webapp_name  = var.static_webapp_name
 
   tags = {
