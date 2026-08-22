@@ -138,7 +138,7 @@ main {
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
   margin: 0 0 6px;
 }
 
@@ -349,7 +349,7 @@ main {
   padding: 2px 8px;
   border-radius: 3px;
   background: var(--status-ok-bg);
-  color: var(--status-ok);
+  color: var(--status-ok-text);
   transition:
     background 0.4s ease,
     color 0.4s ease;
@@ -357,7 +357,7 @@ main {
 
 .badge--current {
   background: var(--status-current-bg);
-  color: var(--status-current);
+  color: var(--accent-text);
 }
 
 .stage[data-in-view='false'] .badge {

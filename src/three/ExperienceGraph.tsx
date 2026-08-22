@@ -170,7 +170,7 @@ export function ExperienceGraph() {
           </div>
           <p className="stage__title">{active.title}</p>
           <p className="stage__range">{active.range}</p>
-          <AchievementList achievements={active.achievements} />
+          <AchievementList achievements={active.achievements} scrollable />
         </div>
       )}
     </div>
