@@ -1,6 +1,6 @@
 # Phase 4 — CI/CD and infrastructure
 
-**Status:** Not started
+**Status:** Complete
 
 ## Goal
 
@@ -17,65 +17,84 @@ build output.
 
 - [`infra/main.tf`](../../infra/main.tf) already sources
   `azure-static-webapp-cicd-kit//modules/azure-static-webapp` — provisions
-  the Static Web App itself.
+  the Static Web App itself. Unchanged this phase; verified still correct.
 - [`infra/variables.tf`](../../infra/variables.tf), [`infra/versions.tf`](../../infra/versions.tf)
-  already set up (OpenTofu ≥1.6, `azurerm` backend).
-- [`.github/workflows/ci.yaml`](../../.github/workflows/ci.yaml) already
-  calls the kit's reusable `opentofu.yml` workflow for the `infra` job, and
-  has a `deploy` job using `Azure/static-web-apps-deploy@v1`.
+  already set up (OpenTofu ≥1.6, `azurerm` backend). Unchanged.
+
+## What was actually needed (revised from the original checklist)
+
+Phase 1 already replaced `.github/workflows/ci.yaml` wholesale with the
+template's `ci.yml` (per the user's explicit instruction that the template
+is the golden standard) — so there was no separate `commitlint` job or
+`prettier` job left to migrate; the template's CI doesn't run commitlint at
+all (it's local-only, via the `commit-msg` pre-commit hook). That collapsed
+most of the original step list into one job: **add the `infra` and `deploy`
+jobs back on top of the template's `build` job**, fixed for the new output
+path.
 
 ## Steps
 
-- [ ] Update the `commitlint` job: drop `working-directory: ./solthoth`,
-      run from repo root, swap `npm ci` → `pnpm install --frozen-lockfile`
-      (with pnpm setup via `pnpm/action-setup`).
-- [ ] Update/replace the `prettier` job: either keep a formatting-check job
-      (if Phase 3 kept Prettier) or replace with `pnpm lint` (ESLint) — match
-      whatever Phase 3 landed on.
-- [ ] Update the `build` job:
-  - [ ] Drop `working-directory: ./solthoth`.
-  - [ ] Swap Node setup for pnpm setup (`pnpm/action-setup` + `actions/setup-node`
-        with `cache: pnpm`), Node 24+.
-  - [ ] `pnpm install --frozen-lockfile`, `pnpm test` (un-comment/enable —
-        no more "tests commented out" caveat), `pnpm build`.
-  - [ ] Fix artifact upload path: Vite outputs to `dist/` at repo root, not
-        `solthoth/dist/solthoth/browser/`. Update
-        `actions/upload-artifact` `path:` accordingly.
-- [ ] Update the `deploy` job's `download-artifact` path to match, and
-      confirm `app_location`/`skip_app_build` inputs to
-      `Azure/static-web-apps-deploy@v1` still make sense for a static Vite
-      build (no SSR — the old Angular app had Express SSR; confirm the new
-      React app is a static SPA build with no server component needed).
-- [ ] Confirm `infra` job's `working_directory: infra` input to the reusable
-      `opentofu.yml` workflow is still correct — no changes expected here,
-      just verify.
-- [ ] Confirm required GitHub secrets are already configured in repo
-      settings (cannot be verified by Claude — ask user to confirm):
-      `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`,
-      `TF_BACKEND_RESOURCE_GROUP`, `TF_BACKEND_STORAGE_ACCOUNT`,
-      `TF_BACKEND_CONTAINER`, `TF_BACKEND_KEY`,
-      `AZURE_STATIC_WEB_APPS_API_TOKEN`.
-- [ ] Push branch and open a **draft** PR so Actions run on this branch and
-      the pipeline can be validated without touching `main` yet (the
-      `infra`/`deploy` jobs are gated to `main` pushes already, so this
-      mainly validates `commitlint`/`prettier or lint`/`build`).
-- [ ] Fix any CI failures surfaced by the draft PR run.
-- [ ] Commit as `ci: migrate workflow to pnpm/vite build and fix artifact paths`.
-- [ ] Check this phase's boxes off and commit as
+- [x] `build` job (from Phase 1, re-verified): pnpm setup, Node 24, no
+      `working-directory: ./solthoth`, `pnpm install --frozen-lockfile`,
+      `pnpm lint`, `pnpm build`, `pnpm test` (not commented out). Added an
+      `Upload build artifact` step (`actions/upload-artifact@v4`, path
+      `dist/` — Vite's default output at repo root, not
+      `solthoth/dist/solthoth/browser/`), gated to `main` push only, same
+      as the old workflow's pattern.
+- [x] Added the `infra` job back: unchanged call into
+      `bit-and-byte-ideas/azure-static-webapp-cicd-kit/.github/workflows/opentofu.yml@main`
+      with `working_directory: infra`, gated to `github.ref ==
+      'refs/heads/main' && github.event_name == 'push'` (matches the old
+      `ci.yaml`'s gating exactly, so a PR never touches Azure).
+- [x] Added the `deploy` job back: downloads the `dist` artifact,
+      `Azure/static-web-apps-deploy@v1` with `app_location: dist/`,
+      `skip_app_build: true` — confirmed correct for a static Vite SPA
+      build (no SSR; see Notes).
+- [x] Confirmed `working_directory: infra` is still correct — unchanged.
+- [x] Confirmed with the user that required GitHub secrets exist (as
+      placeholders; real values land before Phase 5's merge).
+- [x] Pushed the branch and opened **draft PR #9**
+      (`migration/react-template` → `main`) after explicit user
+      confirmation (pushing/opening a PR is a remote, visible action).
+- [x] **Fixed a real CI failure surfaced by the draft PR**: the first run
+      failed with `startup_failure` — "The workflow is requesting
+      'id-token: write', but is only allowed 'id-token: none'." The
+      reusable `opentofu.yml` workflow requests `id-token: write` for
+      Azure OIDC login; GitHub requires the *calling* workflow to
+      explicitly grant at least that much, and this repo's default token
+      permissions are more restrictive. Fixed by adding
+      `permissions: { id-token: write, contents: read }` to the `infra`
+      job. Diagnosed via `gh api .../check-suites` + scraping the run
+      page's `Invalid workflow file` banner (not visible in `gh run view`
+      or job logs, since the run never started).
+- [x] Second run (32550761057) passed: `build` green (lint/build/test),
+      `infra`/`deploy` correctly **skipped** (PR event, not a `main`
+      push) — exactly the intended gating.
+- [x] Committed as
+      `ci: migrate workflow to pnpm/vite build and fix artifact paths` and
+      `fix(ci): grant id-token: write to the infra job for Azure OIDC login`.
+- [x] Checked this phase's boxes off and committed as
       `docs: mark phase 4 cicd/infra complete`.
 
 ## Acceptance criteria
 
-- Draft PR's `commitlint`, format/lint, and `build` jobs pass on GitHub
-  Actions using the new stack.
-- No workflow step still references `solthoth/` or `npm`.
-- User has confirmed all required secrets exist in repo settings (Phase 5
-  will actually exercise `infra`/`deploy` on merge to `main`).
+- [x] Draft PR's `build` job (lint/build/test) passes on GitHub Actions
+      using the new stack.
+- [x] No workflow step references `solthoth/` or `npm`.
+- [x] User has confirmed all required secrets exist in repo settings
+      (placeholders for now — real values land before Phase 5's merge,
+      which is when `infra`/`deploy` will actually run for the first
+      time).
 
-## Notes / open questions for user review
+## Notes
 
-- Confirm the new React app is a pure static SPA (no SSR needed) — if SSR
-  or an API backend is wanted later, the `deploy` job and Static Web App
-  config will need revisiting; out of scope for this migration.
-- This phase does not merge to `main` — that's Phase 5, once `infra` and
-  `deploy` jobs can be exercised for real.
+- **Still unverified**: the `infra` and `deploy` jobs themselves haven't
+  run yet — they're gated to `main` push, and this phase deliberately
+  doesn't merge to `main`. First real exercise of Azure OIDC login,
+  OpenTofu plan/apply, and the static web app deploy happens in Phase 5,
+  once real secret values are in place. Don't assume they're bug-free
+  just because the YAML is now valid and the `build` job is green.
+- Confirmed the new React app is a pure static SPA (no SSR, no server
+  component) — `app_location: dist/` + `skip_app_build: true` is correct
+  as-is, no Static Web App config changes needed.
+- PR: https://github.com/solthoth/ProfileSite/pull/9 (draft).
