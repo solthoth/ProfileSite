@@ -195,6 +195,72 @@ main {
   color: var(--accent);
 }
 
+/* ---------- Experience topology (3D) ---------- */
+
+.topology {
+  position: relative;
+  height: 78vh;
+  min-height: 460px;
+  max-height: 680px;
+  margin-bottom: 32px;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+}
+
+.topology__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.topology__canvas canvas {
+  display: block;
+}
+
+.topology__hud {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: min(420px, calc(100% - 48px));
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  padding: 20px 24px;
+}
+
+.topology__hud-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.topology__hud-meta h3 {
+  font-size: 1.1rem;
+}
+
+.topology__hud .stage__title {
+  margin-top: 2px;
+}
+
+.topology__hud .stage__achievements {
+  margin-top: 14px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+@media (max-width: 780px) {
+  .topology__hud {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: auto;
+  }
+}
+
 /* ---------- Experience rail ---------- */
 
 .rail {
