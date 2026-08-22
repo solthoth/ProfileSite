@@ -1,43 +1,23 @@
 # ProfileSite
 
-Carlos Barajas's resume, showcased at [solthoth.com](https://solthoth.com). A single-page React app rendering the content of [`carlos-barajas-resume.md`](carlos-barajas-resume.md), the canonical source of truth for the resume itself.
+Carlos Barajas's resume site, deployed at [solthoth.com](https://solthoth.com) — a single-page React app rendering the content of [`carlos-barajas-resume.md`](carlos-barajas-resume.md), the canonical source of truth for the resume itself.
 
-Scaffolded from [bit-and-byte-ideas/frontend-react-teamplate](https://github.com/bit-and-byte-ideas/frontend-react-teamplate); infrastructure and deployment build on [bit-and-byte-ideas/azure-static-webapp-cicd-kit](https://github.com/bit-and-byte-ideas/azure-static-webapp-cicd-kit). See [`CLAUDE.md`](CLAUDE.md) for architecture details and [`docs/migration/`](docs/migration/) for the (in-progress) migration history from a prior Angular version of this site.
-
-## Prerequisites
-
-- [Node.js](https://nodejs.org/) 24+
-- [pnpm](https://pnpm.io/) (this repo pins it via the `packageManager` field —
-  run `corepack enable pnpm` if you don't have it)
-
-## Getting started
+## Quickstart
 
 ```bash
 pnpm install
-# install git hooks (commit-msg + pre-commit) — requires the pre-commit tool
-# (https://pre-commit.com): `brew install pre-commit` or `pipx install pre-commit`
 pre-commit install --hook-type pre-commit --hook-type commit-msg
 pnpm dev
 ```
 
-## Commands
+Requires [Node.js](https://nodejs.org/) 24+ and [pnpm](https://pnpm.io/) (pinned via `packageManager` in `package.json` — run `corepack enable pnpm` if it's missing) and [pre-commit](https://pre-commit.com/) (`brew install pre-commit` or `pipx install pre-commit`) for the local git hooks.
 
-| Command            | What it does                                                     |
-| ------------------ | ------------------------------------------------------------------ |
-| `pnpm dev`          | Start the Vite dev server with HMR.                                |
-| `pnpm build`        | Type-check (`tsc -b`) and build the production bundle to `dist/`. |
-| `pnpm preview`      | Serve the built `dist/` locally to verify the production output.  |
-| `pnpm lint`         | Run ESLint across the repo.                                        |
-| `pnpm typecheck`    | Type-check only (`tsc -b`), no build output.                       |
-| `pnpm test`         | Run the Vitest unit suite once.                                    |
-| `pnpm test:watch`   | Run Vitest in watch mode.                                          |
+## Documentation
 
-Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) and are validated by commitlint via a git hook. The same `lint`, `build`, and `test` commands run in CI on every push and pull request.
+Full documentation lives in [`docs/`](docs/) (also published to Backstage TechDocs via [`catalog-info.yaml`](catalog-info.yaml)):
 
-## Updating the resume
+- [Architecture](docs/architecture.md) — content/data model, components, design system.
+- [Development](docs/development.md) — commands, testing, commit conventions.
+- [Deployment](docs/deployment.md) — CI/CD pipeline, infrastructure, shipping to prod.
 
-`carlos-barajas-resume.md` is the source of truth for content — never delete it. Resume content is hand-transcribed into [`src/data/resume.ts`](src/data/resume.ts); when the Markdown changes, update the TypeScript data alongside it so the two stay in sync.
-
-## Infrastructure
-
-[`deploy/infra/dev/`](deploy/infra/dev/) and [`deploy/infra/prod/`](deploy/infra/prod/) each provision an Azure Static Web App via OpenTofu and the `azure-static-webapp-cicd-kit` module — dev deploys on every push to `main`, prod deploys when a GitHub Release is published. See [`CLAUDE.md`](CLAUDE.md#cicd-and-infrastructure) for the full wiring and [`docs/migration/phase-5-cutover.md`](docs/migration/phase-5-cutover.md) for current deploy status.
+See [`CLAUDE.md`](CLAUDE.md) for guidance aimed at Claude Code specifically.
