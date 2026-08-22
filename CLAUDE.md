@@ -110,6 +110,3 @@ Mirrors the pattern used across other bit-and-byte-ideas-adjacent repos (see
   `deploy/infra/prod/terraform.tfvars` is `null` pending a CNAME delegation
   record at the registrar; see `docs/migration/phase-5-cutover.md`.
 
-## Development environment
-
-DevContainer configuration at `.devcontainer/devcontainer.json`: Node 24 TypeScript image, pnpm via Corepack (`postCreateCommand` runs `pnpm install` at repo root), Azure CLI, OpenTofu, GitHub CLI, pre-commit, and Ollama (used by `scripts/pr-draft-ai.sh` for local AI-drafted PR descriptions).
