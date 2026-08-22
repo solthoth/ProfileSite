@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: profilesite
+  description: Carlos Barajas's resume site (React + Vite), deployed at solthoth.com.
+  annotations:
+    github.com/project-slug: solthoth/ProfileSite
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: website
+  lifecycle: production
+  owner: user:default/solthoth
