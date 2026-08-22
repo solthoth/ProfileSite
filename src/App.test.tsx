@@ -1,24 +1,22 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import App from './App';
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
+import App from './App'
+import { earlierExperience, experience, person } from './data/resume'
 
 describe('App', () => {
-  it('renders the get started heading', () => {
-    render(<App />);
-    expect(
-      screen.getByRole('heading', { name: /get started/i }),
-    ).toBeInTheDocument();
-  });
+  it('renders the resume summary and contact info', () => {
+    render(<App />)
+    expect(screen.getByRole('heading', { level: 1, name: person.name })).toBeInTheDocument()
+    expect(screen.getAllByText(person.email).length).toBeGreaterThan(0)
+  })
 
-  it('increments the counter when clicked', async () => {
-    const user = userEvent.setup();
-    render(<App />);
-    const button = screen.getByRole('button', { name: /count is 0/i });
-
-    await user.click(button);
-
-    expect(
-      screen.getByRole('button', { name: /count is 1/i }),
-    ).toBeInTheDocument();
-  });
-});
+  it('renders every experience entry', () => {
+    render(<App />)
+    for (const entry of experience) {
+      expect(screen.getByText(entry.company)).toBeInTheDocument()
+    }
+    for (const role of earlierExperience) {
+      expect(screen.getAllByText(role.company, { exact: false }).length).toBeGreaterThan(0)
+    }
+  })
+})
