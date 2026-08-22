@@ -1,7 +1,5 @@
 # Custom files
 .DS_Store
-PR_TITLE.txt
-PR.md
 
 # Claude
 .claude/settings.local.json
