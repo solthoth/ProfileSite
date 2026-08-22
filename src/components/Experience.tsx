@@ -14,9 +14,17 @@ export function Experience() {
   return (
     <Section id="experience" eyebrow="Experience" title="Where I've shipped">
       {webGLCapable ? (
-        <Suspense fallback={<ExperienceRail />}>
-          <ExperienceGraph />
-        </Suspense>
+        <>
+          <Suspense fallback={<ExperienceRail />}>
+            <ExperienceGraph />
+          </Suspense>
+          {/* The 3D topology only ever shows one role's achievements at a
+              time (whichever the camera is on), so print needs the full
+              rail rendered too - it's just hidden on screen. */}
+          <div className="experience__print-rail">
+            <ExperienceRail />
+          </div>
+        </>
       ) : (
         <ExperienceRail />
       )}

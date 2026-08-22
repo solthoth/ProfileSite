@@ -213,6 +213,10 @@ main {
 
 /* ---------- Experience topology (3D) ---------- */
 
+.experience__print-rail {
+  display: none;
+}
+
 .topology {
   position: relative;
   height: 78vh;
@@ -534,5 +538,70 @@ main {
   .rail__company-head {
     flex-direction: column;
     gap: 4px;
+  }
+}
+
+/* ---------- Print ---------- */
+
+@media print {
+  /* Force the light palette regardless of dark mode/system preference -
+     printed output should read as ink on paper, not carry dark-mode
+     colors that waste toner and hurt legibility. Matches the specificity
+     of the dark-theme selectors in src/index.css (:root:not([data-theme=
+     'light']) and :root[data-theme='dark'], both 0-2-0) so this wins the
+     cascade instead of losing to a plain :root override. */
+  :root,
+  :root:not([data-theme='light']),
+  :root[data-theme='dark'] {
+    --ink: #14181f;
+    --ink-soft: #4b535f;
+    --ink-faint: #4b535f;
+    --paper: #ffffff;
+    --paper-raised: #ffffff;
+    --line: #d6dbd6;
+    --line-strong: #b7beb8;
+    --accent: #b5651d;
+    --accent-text: #954f16;
+    --status-ok: #3f7a5c;
+    --status-ok-text: #396e53;
+    --status-current: #b5651d;
+    color-scheme: light;
+  }
+
+  .skip-link,
+  .hero canvas,
+  .topology,
+  .pin-spacer {
+    display: none !important;
+  }
+
+  .status-panel {
+    box-shadow: none;
+  }
+
+  /* The 3D topology never renders every role's achievements at once (only
+     the node the camera is on), so this static rail - hidden on screen -
+     is what actually carries the full experience section to print. */
+  .experience__print-rail {
+    display: block;
+  }
+
+  /* .stage normally reveals via useInView (IntersectionObserver) as the
+     user scrolls it into the viewport. Print never scrolls - and the
+     print-only rail above is display:none on screen, so its stages never
+     intersect at all - so without this override every role would print
+     at its pre-reveal opacity: 0. Avoid the break at the role level, not
+     the company level - a company with several roles (e.g. Green Dot
+     Corp's three) is often taller than a page, and avoiding a break
+     across the whole company just pushes it to a fresh page and leaves
+     the rest of the previous page blank. */
+  .stage {
+    opacity: 1;
+    transform: none;
+    break-inside: avoid;
+  }
+
+  .page {
+    padding-bottom: 24px;
   }
 }
