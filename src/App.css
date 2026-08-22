@@ -4,6 +4,30 @@
   padding: 0 24px 96px;
 }
 
+/* ---------- Skip link ---------- */
+
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: 24px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus-visible {
+  top: 16px;
+}
+
 /* ---------- Hero ---------- */
 
 .hero {
