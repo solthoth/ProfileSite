@@ -30,6 +30,11 @@ export function Hero() {
             linkedin.com/in/solthoth
           </a>
         </li>
+        <li>
+          <button type="button" onClick={() => window.print()}>
+            Download resume
+          </button>
+        </li>
       </ul>
     </header>
   )
