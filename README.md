@@ -18,6 +18,6 @@ Full documentation lives in [`docs/`](docs/) (also published to Backstage TechDo
 
 - [Architecture](docs/architecture.md) — content/data model, components, design system.
 - [Development](docs/development.md) — commands, testing, commit conventions.
-- [Deployment](docs/deployment.md) — CI/CD pipeline, infrastructure, shipping to prod.
+- [Deployment](docs/deployment.md) — CI/CD pipeline, shipping to prod.
 
 See [`CLAUDE.md`](CLAUDE.md) for guidance aimed at Claude Code specifically.

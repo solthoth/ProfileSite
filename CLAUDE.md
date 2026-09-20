@@ -72,43 +72,25 @@ Playwright covers end-to-end and scroll/animation-driven behavior under `e2e/`, 
 
 ## CI/CD and infrastructure
 
-Mirrors the pattern used across other bit-and-byte-ideas-adjacent repos (see
-[bit-and-byte-ideas-website](https://github.com/bit-and-byte-ideas/bit-and-byte-ideas-website)'s
-`deploy/infra/` and workflow layout) rather than a single combined pipeline:
+The Azure Static Web Apps that host the site are provisioned and managed
+**outside this repo**, by the platform-foundation OpenTofu platform — including
+the `solthoth.com` DNS zone and custom-domain binding. This repo contains no
+OpenTofu code and no infra workflows (`deploy/infra/` and `deploy-infra-*.yaml`
+were removed when that migration happened); don't recreate them. It only
+builds the app and pushes the result to the existing Static Web Apps:
 
 - **`.github/workflows/ci.yml`** — `pnpm lint`, `pnpm build`, `pnpm test` on
-  push/PR to `main`. Build-only; doesn't touch infra or deploy.
-- **`deploy/infra/dev/` and `deploy/infra/prod/`** — separate OpenTofu roots,
-  each sourcing the `azure-static-webapp-cicd-kit`'s `azure-static-webapp`
-  module. `resource_group_name`/`static_webapp_name` are derived from
-  `project_name` + `environment` (`terraform.tfvars`, `project_name =
-  "solthoth-profilesite"`) as `rg-solthoth-profilesite-{env}` /
-  `swa-solthoth-profilesite-{env}`. The target resource group must already
-  exist in Azure — the module reads it via a data source, it doesn't create
-  one.
-- **`deploy-infra-dev.yaml` / `deploy-infra-prod.yaml`** — call the kit's
-  reusable `opentofu.yml` workflow per environment, each with its own
-  `working_directory` and Azure/backend identifiers pulled from GitHub
-  Actions **Variables** (`vars.*`, not secrets — none of these values are
-  sensitive under OIDC auth): `AZURE_CLIENT_ID_DEV`/`_PROD`,
-  `AZURE_TENANT_ID` (shared), `AZURE_SUBSCRIPTION_ID` (shared, no per-env
-  suffix in this repo), `TF_BACKEND_RESOURCE_GROUP`/`_STORAGE_ACCOUNT`
-  (shared), `TF_BACKEND_CONTAINER_DEV`/`_PROD`, `TF_BACKEND_KEY_DEV`/`_PROD`.
-  Both grant `permissions: { id-token: write, contents: read }` explicitly —
-  required for the reusable workflow's Azure OIDC login; this repo's default
-  token permissions are more restrictive than that.
+  push/PR to `main`. Build-only; doesn't deploy.
 - **`deploy-app-dev.yaml`** — builds and deploys to the `dev` Static Web App
   on every push to `main` (plus `workflow_dispatch` for previewing a branch).
 - **`deploy-app-prod.yaml`** — builds and deploys to `prod` **only when a
   GitHub Release is published** — not on every push to `main`. Cut a release
   to ship to production.
 - Each environment's `AZURE_STATIC_WEB_APPS_API_TOKEN` is a GitHub
-  Environment secret (`dev`/`prod` environments), sourced from that
-  environment's `deploy/infra/<env>` OpenTofu `api_key` output.
-- Both environments are live: dev auto-deploys on every push to `main`,
-  prod deploys on published releases (see `git tag -l` / GitHub Releases
-  for the current version).
-- A custom domain (`solthoth.com`) isn't bound yet — `custom_domain` in
-  `deploy/infra/prod/terraform.tfvars` is `null` pending a CNAME delegation
-  record at the registrar.
+  Environment secret (`dev`/`prod` environments) and is the **only** Azure
+  credential GitHub needs. Its value is the deployment token of the matching
+  Static Web App, obtained from platform-foundation. No Azure OIDC, backend,
+  or `vars.*` identifiers are used by any workflow here.
+- Resource names, hostnames, and the custom domain are owned by
+  platform-foundation, not this repo — check there rather than assuming them.
 
