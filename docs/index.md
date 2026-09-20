@@ -7,7 +7,7 @@ ProfileSite is Carlos Barajas's resume site, deployed at [solthoth.com](https://
 - **Stack**: React 19 + TypeScript + Vite, package-managed with pnpm.
 - **Content**: sourced from a single Markdown file (`carlos-barajas-resume.md`) at the repo root, hand-transcribed into a typed data module for the UI to render.
 - **Design**: an "infrastructure console" aesthetic — a CLI-style status panel and a CI/CD-pipeline-style experience timeline — grounded in the subject's own domain (platform engineering) rather than a generic portfolio template.
-- **Hosting**: Azure Static Web Apps, provisioned with OpenTofu, with separate `dev` and `prod` environments.
+- **Hosting**: Azure Static Web Apps with separate `dev` and `prod` environments, provisioned and managed outside this repo (platform-foundation).
 
 ## Where to look next
 
@@ -17,4 +17,4 @@ ProfileSite is Carlos Barajas's resume site, deployed at [solthoth.com](https://
 
 ## Origin
 
-This site was rebuilt from an earlier Angular implementation in August 2026, scaffolded from [bit-and-byte-ideas/frontend-react-teamplate](https://github.com/bit-and-byte-ideas/frontend-react-teamplate) and deployed using [bit-and-byte-ideas/azure-static-webapp-cicd-kit](https://github.com/bit-and-byte-ideas/azure-static-webapp-cicd-kit), matching the tooling conventions used across other Bit and Byte Ideas repositories.
+This site was rebuilt from an earlier Angular implementation in August 2026, scaffolded from [bit-and-byte-ideas/frontend-react-teamplate](https://github.com/bit-and-byte-ideas/frontend-react-teamplate), matching the tooling conventions used across other Bit and Byte Ideas repositories.

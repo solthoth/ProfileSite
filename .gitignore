@@ -26,24 +26,6 @@ playwright/.cache/
 logs
 *.log
 
-# OpenTofu / Terraform
-**/.terraform/
-*.tfstate
-*.tfstate.*
-crash.log
-crash.*.log
-*.tfvars
-*.tfvars.json
-# terraform.tfvars is deliberately committed per environment (deploy/infra/*/) —
-# it only holds non-sensitive naming/config values, never credentials.
-!**/terraform.tfvars
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-.terraformrc
-terraform.rc
-
 # IDEs and editors
 .idea/
 *.suo
