@@ -86,7 +86,7 @@ One item per line at 0.9rem, under a bold label (`h3`), mirroring the reference'
 - **Header:** a three-cell table with two `BLOCK` panels (name and edition headline, contact list with website) and a nested table drawing the three `BLOCK_SOFT` blocks.
 - **Rule:** a bottom-bordered paragraph under the header.
 - **Body:** a two-cell table. The main cell (5.35 inch) holds Profile Summary and Experience. The sidebar cell has a left border and holds Skills, Education, Earlier Experience and Interests. Earlier Experience sits in the sidebar so it fills the sidebar's otherwise empty space on page 2.
-- **Bands:** paragraph shading plus same-color padding borders. Consecutive bullets merge into one band per role.
+- **Bands:** a one-cell shaded table nested in the main column, with 5pt top/bottom and 9pt side padding. A role's bullets and sub-bullets all sit in one cell, so each role gets a single rectangle. Don't use paragraph shading: Word only merges shaded paragraphs whose indents match, so indented sub-bullets break into separate offset boxes.
 - **Pagination:** no "keep with next" inside the body table. Word applies it to the whole row, which pushes the body off page 1.
 
 Each edition differs only in its headline, its summary, and which Experience bullets it keeps (the bullet's audience tags). See `scripts/resume/README.md`.
