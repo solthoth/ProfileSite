@@ -31,6 +31,11 @@ export function Hero() {
           </a>
         </li>
         <li>
+          <a href={person.github} target="_blank" rel="noreferrer">
+            github.com/solthoth
+          </a>
+        </li>
+        <li>
           <button type="button" onClick={() => window.print()}>
             Download resume
           </button>
