@@ -62,6 +62,9 @@ PAGE_WIDTH = Inches(8.5)
 PAGE_HEIGHT = Inches(11)
 MARGIN = Inches(0.5)
 CONTENT_WIDTH = PAGE_WIDTH - 2 * MARGIN
+MAIN_WIDTH = Inches(5.35)
+MAIN_GUTTER = Pt(14)
+MAIN_CONTENT_WIDTH = MAIN_WIDTH - MAIN_GUTTER
 
 
 # ---------------------------------------------------------------------------
@@ -263,27 +266,26 @@ def keep_row_together(row) -> None:
     row._tr.get_or_add_trPr().append(cant_split)
 
 
-def band(paragraph, fill: str = BAND, pad_pt: int = 4) -> None:
-    """Shade a paragraph and pad it with same-color borders.
+def band(container, width):
+    """A one-cell shaded table: one continuous band with real inner padding.
 
-    Consecutive paragraphs with identical borders render as one box, which
-    gives each role's bullet list a single continuous band.
+    Paragraph shading can't do this. Word only merges shaded paragraphs into
+    one box when their indents match, so indented sub-bullets broke out into
+    their own offset box, and its border "padding" didn't inset the text.
     """
-    p_pr = paragraph._p.get_or_add_pPr()
-    borders = OxmlElement("w:pBdr")
-    for side in ("top", "left", "bottom", "right"):
-        edge = OxmlElement(f"w:{side}")
-        edge.set(qn("w:val"), "single")
-        edge.set(qn("w:sz"), "4")
-        edge.set(qn("w:space"), str(pad_pt))
-        edge.set(qn("w:color"), fill)
-        borders.append(edge)
-    p_pr.append(borders)
-    shading = OxmlElement("w:shd")
-    shading.set(qn("w:val"), "clear")
-    shading.set(qn("w:color"), "auto")
-    shading.set(qn("w:fill"), fill)
-    p_pr.append(shading)
+    table = container.add_table(rows=1, cols=1)
+    fix_table_layout(table, [width])
+    cell = table.rows[0].cells[0]
+    set_cell_shading(cell, BAND)
+    set_cell_margins(cell, top=Pt(5), bottom=Pt(5), left=Pt(9), right=Pt(9))
+    cell.paragraphs[0]._p.getparent().remove(cell.paragraphs[0]._p)
+    # _Cell.add_table appends the empty paragraph Word requires after a
+    # table; pin its height so it becomes the gap below the band.
+    gap = container.paragraphs[-1].paragraph_format
+    gap.space_before = gap.space_after = Pt(0)
+    gap.line_spacing_rule = WD_LINE_SPACING.EXACTLY
+    gap.line_spacing = Pt(3)
+    return cell
 
 
 def bottom_rule(paragraph, color: str = RULE) -> None:
@@ -358,15 +360,14 @@ def section_heading(container, text: str, *, first: bool = False) -> None:
 
 
 def bullet_paragraph(container, text: str, *, level: int = 0) -> None:
-    indent = Inches(0.17 + 0.18 * level)
-    p = paragraph(container, after=1)
+    indent = Inches(0.14 + 0.18 * level)
+    p = paragraph(container, after=0.6)
     p.paragraph_format.left_indent = indent
     p.paragraph_format.first_line_indent = -Inches(0.13)
     p.paragraph_format.tab_stops.add_tab_stop(indent)
     p.paragraph_format.keep_together = True
     add_run(p, ("•" if level == 0 else "–") + "\t", color=BLUE if level == 0 else MUTED, size=9)
     add_run(p, text, size=9 if level == 0 else 8.6)
-    band(p)
 
 
 def build_header(doc, resume: Resume, variant: Variant) -> None:
@@ -432,7 +433,7 @@ def build_experience(container, resume: Resume, variant: Variant) -> None:
     section_heading(container, "Experience")
     for index, company in enumerate(resume.experience):
         single_role = len(company.roles) == 1 and company.roles[0].range == company.range
-        company_p = paragraph(container, before=0 if index == 0 else 9, after=1)
+        company_p = paragraph(container, before=0 if index == 0 else 7, after=1)
         add_run(company_p, company.name, size=9.8, bold=True)
         if not single_role:
             meta = paragraph(container, after=2)
@@ -446,12 +447,15 @@ def build_experience(container, resume: Resume, variant: Variant) -> None:
             bullets = [b for b in role.bullets if variant.id in b.audiences]
             title_p = paragraph(container, before=3)
             add_run(title_p, role.title, font=DISPLAY_FONT, size=10.2, color=BLUE)
-            range_p = paragraph(container, after=4 if bullets else 2)
+            range_p = paragraph(container, after=3 if bullets else 2)
             add_run(range_p, role.range, size=8.4, color=MUTED)
+            if not bullets:
+                continue
+            box = band(container, MAIN_CONTENT_WIDTH)
             for bullet in bullets:
-                bullet_paragraph(container, bullet.text)
+                bullet_paragraph(box, bullet.text)
                 for item in bullet.sub_items:
-                    bullet_paragraph(container, item, level=1)
+                    bullet_paragraph(box, item, level=1)
 
 
 
@@ -511,19 +515,17 @@ def build_document(resume: Resume, variant: Variant) -> Document:
 
     build_header(doc, resume, variant)
 
-    main_width = Inches(5.35)
     body = doc.add_table(rows=1, cols=2)
-    fix_table_layout(body, [main_width, CONTENT_WIDTH - main_width])
+    fix_table_layout(body, [MAIN_WIDTH, CONTENT_WIDTH - MAIN_WIDTH])
     main, side = body.rows[0].cells
-    set_cell_margins(main, left=0, right=Pt(14))
+    set_cell_margins(main, left=0, right=MAIN_GUTTER)
     set_cell_margins(side, left=Pt(14), right=0)
     set_cell_border(side, "left", RULE_STRONG)
 
     main.paragraphs[0]._p.getparent().remove(main.paragraphs[0]._p)
     section_heading(main, "Profile Summary", first=True)
-    summary = paragraph(main, after=4)
+    summary = paragraph(band(main, MAIN_CONTENT_WIDTH))
     add_run(summary, variant.summary, size=9)
-    band(summary, pad_pt=6)
     build_experience(main, resume, variant)
 
     side.paragraphs[0]._p.getparent().remove(side.paragraphs[0]._p)
