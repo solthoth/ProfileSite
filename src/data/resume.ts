@@ -159,7 +159,7 @@ export const experience: ExperienceEntry[] = [
             text: 'Led 14 engineers across two teams: DevOps (10 engineers: 1 staff, 9 senior) and Developer Experience (4 platform engineers: 1 principal, 1 staff, 1 lead, 1 senior), owning engineering infrastructure and developer productivity at scale.',
           },
           {
-            text: "Drove implementation and deployment of an internal developer portal using Spotify's Backstage, improving service discovery, documentation, and onboarding workflows.",
+            text: "Drove implementation and deployment of an internal developer portal using Spotify's Backstage, cutting the time to promote a service to production from 7 days to 15 minutes and improving service discovery, documentation, and onboarding workflows.",
           },
           {
             text: 'Partnered with cross-functional teams to reduce friction in the development lifecycle through self-service tooling, automation, and improved onboarding.',
@@ -177,7 +177,7 @@ export const experience: ExperienceEntry[] = [
             text: 'Improved CI/CD pipelines across teams using GitHub Actions, enhancing build/test/deploy efficiency and reliability.',
           },
           {
-            text: 'Directed migration of legacy workloads to containerized services using Docker and Kubernetes.',
+            text: 'Directed migration of ~70 legacy workloads to containerized services using Docker and Kubernetes.',
           },
           {
             text: 'Established observability standards and operational tooling, moving teams toward software-driven operations.',
@@ -191,6 +191,7 @@ export const experience: ExperienceEntry[] = [
   },
   {
     company: 'Shell Recharge Solutions',
+    companyNote: 'EV charging OCPP/OCPI platform · ~15K charging stations across US & EU regions',
     companyRange: 'Jun 2021 – Jun 2024',
     roles: [
       {
@@ -198,16 +199,16 @@ export const experience: ExperienceEntry[] = [
         range: 'Oct 2021 – Jun 2024',
         achievements: [
           {
-            text: 'Led two SRE teams in the US and India totaling 10 engineers (2 leads, 8 senior), coordinating across US, EU, and India time zones.',
+            text: 'Led two SRE teams in the US and India totaling 10 engineers (2 leads, 8 senior), coordinating across US, EU, and India time zones; improved uptime from 97% to 99% across 5 platforms.',
           },
           {
-            text: 'Served as interim Cybersecurity Engineering Manager: implemented security controls per ISO 27001, added security/vulnerability checks to the CI pipeline, and drove patching across EC2 instances, base Docker images, and Java/Go applications.',
+            text: 'Served as interim Cybersecurity Engineering Manager, ensuring the company maintained its ISO 27001 certification: enforced compliance controls, implemented guardrails between CI/CD and infrastructure access controls, added security/vulnerability checks to the CI pipeline, and drove patching across EC2 instances, base Docker images, and Java/Go applications.',
           },
           {
             text: 'Built and ran tier 3 incident management; codified PagerDuty services integrated with Datadog and Jira in Terraform.',
           },
           {
-            text: 'Established end-to-end observability with Datadog using a code-first approach — Terraform-managed monitors, SLOs, and synthetic testing — and set logging standards for application development.',
+            text: 'Established end-to-end observability with Datadog using a code-first approach — Terraform-managed monitors, SLOs, and synthetic testing — and set logging standards for application development; the resulting metrics enabled proactive fixes and load scaling that cut incident frequency from roughly every 48 hours to once every two weeks.',
           },
           {
             text: 'Containerized Java (Spring) and Go applications with Docker, deployed via Helm into EKS.',
@@ -281,7 +282,7 @@ export const experience: ExperienceEntry[] = [
             text: 'Defined development and unit-testing best practices; introduced TDD with NUnit, NSubstitute, and Moq.',
           },
           {
-            text: 'Migrated legacy Delphi and .NET Framework applications to .NET Core, deployed as Docker containers.',
+            text: 'Migrated ~20 legacy Delphi and .NET Framework applications to .NET Core, deployed as Docker containers.',
           },
           {
             text: 'Built producer/consumer services for a distributed system using RabbitMQ, with data layers against Pervasive and MSSQL.',
