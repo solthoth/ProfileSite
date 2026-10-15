@@ -27,6 +27,7 @@ pnpm dev
 | `pnpm test:watch` | Run Vitest in watch mode. |
 | `pnpm test:e2e` | Run the Playwright end-to-end suite once (headless, starts its own dev server). |
 | `pnpm test:e2e:ui` | Run the Playwright suite in UI mode for interactive debugging. |
+| `pnpm resumes` | Regenerate the resume PDFs and `src/data/resume-editions.json` from the Markdown resume (macOS + Microsoft Word + uv). Run after any resume change. |
 
 These scripts are the single source of truth: the local pre-commit hooks and the CI workflow both invoke them directly, so a commit that passes locally can't disagree with what CI reports.
 
@@ -34,11 +35,11 @@ These scripts are the single source of truth: the local pre-commit hooks and the
 
 Tests run with [Vitest](https://vitest.dev/) in a jsdom environment, using React Testing Library. Configuration lives in `vite.config.ts` under the `test` key; note that `include` is scoped to `src/**/*.{test,spec}.{ts,tsx}` rather than Vitest's default. `src/setupTests.ts` registers `@testing-library/jest-dom` matchers.
 
-`src/App.test.tsx` has smoke tests asserting the hero renders and that every experience/earlier-experience entry from `resume.ts` appears on the page.
+`src/App.test.tsx` has smoke tests asserting the header, every experience entry, every skill category, and one download link per resume edition render. `src/data/resume.test.ts` checks that `resume.ts` matches the Markdown bullet for bullet, including audience tags, and that the committed PDFs were generated from the current Markdown.
 
 ### End-to-end tests
 
-[Playwright](https://playwright.dev/) drives a real browser under `e2e/`, configured in `playwright.config.ts`. This exists because headless Chrome's one-shot screenshot capture doesn't reliably tick `requestAnimationFrame`-driven work — GSAP tweens, React Three Fiber's `useFrame` loop, `IntersectionObserver` reveals — so anything scroll- or animation-driven needs a real browser's event loop to verify correctly. `pnpm test:e2e` starts its own dev server (`webServer` in the config) and runs against it; run `pnpm exec playwright install --with-deps chromium` once beforehand to fetch the browser binary. CI runs the same suite in a dedicated `e2e` job.
+[Playwright](https://playwright.dev/) drives a real browser under `e2e/`, configured in `playwright.config.ts`. It covers what jsdom can't: the PDFs actually being served and downloaded, the sticky download panel, the absence of horizontal scroll at desktop, tablet, and phone widths, print styles, and axe accessibility scans. `pnpm test:e2e` starts its own dev server (`webServer` in the config) on port 5173; set `E2E_PORT` to use another port when 5173 is taken. Run `pnpm exec playwright install --with-deps chromium` once beforehand to fetch the browser binary. CI runs the same suite in a dedicated `e2e` job.
 
 ## Commit conventions
 

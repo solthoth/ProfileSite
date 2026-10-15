@@ -3,21 +3,17 @@ import { Section } from './Section'
 
 export function Skills() {
   return (
-    <Section id="skills" eyebrow="Key skills" title="What I bring">
-      <div className="skills">
-        {skills.map((category) => (
-          <div className="skills__group" key={category.label}>
-            <p className="skills__label">{category.label}</p>
-            <ul className="skills__chips">
-              {category.items.map((item) => (
-                <li className="chip" key={item}>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
+    <Section id="skills" title="Skills">
+      {skills.map((category) => (
+        <div className="skills__group" key={category.label}>
+          <h3 className="skills__label">{category.label}</h3>
+          <ul className="sidebar-list">
+            {category.items.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </Section>
   )
 }

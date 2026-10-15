@@ -1,16 +1,11 @@
 import { person } from '../data/resume'
-import { ThemeToggle } from './ThemeToggle'
 
 export function SiteFooter() {
   return (
-    <footer className="footer">
+    <footer className="site-footer">
       <p>
-        {person.name} · {person.location}
+        {person.name} · {person.location} · <a href={`mailto:${person.email}`}>{person.email}</a>
       </p>
-      <div className="footer__links">
-        <a href={`mailto:${person.email}`}>{person.email}</a>
-        <ThemeToggle />
-      </div>
     </footer>
   )
 }

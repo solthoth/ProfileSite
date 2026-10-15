@@ -6,6 +6,7 @@
 - **Email:** carlos.barajas@proton.me
 - **LinkedIn:** https://www.linkedin.com/in/solthoth
 - **GitHub:** https://github.com/solthoth
+- **Website:** https://solthoth.com
 
 <!--
 SOURCE OF TRUTH — maintenance notes for future updates (human or AI):
@@ -17,6 +18,9 @@ SOURCE OF TRUTH — maintenance notes for future updates (human or AI):
   (manager), dir (director). Sub-bullets inherit their parent's tags. The
   website renders every bullet; variant resumes keep only bullets tagged
   for them. Mirror any tag change in `audiences` in src/data/resume.ts.
+- RESUME VARIANTS: the section at the end holds each downloadable edition's
+  headline and summary. `pnpm resumes` builds the PDFs from this file; see
+  scripts/resume/README.md.
 -->
 
 ## Summary
@@ -149,3 +153,29 @@ Platform engineering leader with nearly two decades in production systems, build
 ## Interests
 
 Martial arts (BJJ, Tai Chi, Kung Fu) · Hobby development exploring new languages and technologies · Video gaming (puzzle, strategy, base building)
+
+## Resume Variants
+
+<!--
+Headline and summary for each downloadable edition (public/resumes/*.pdf).
+Experience bullets come from the audience tags above; everything else is
+shared. Not rendered on the website.
+-->
+
+### Individual Contributor (ic)
+
+**Headline:** Platform & DevOps Engineer
+
+Platform and DevOps engineer with nearly two decades in production systems, building infrastructure as code, CI/CD, and observability across Azure and AWS. Currently directing the technical build of a Backstage-driven self-service provisioning platform that converts ~70 Ansible playbooks into ~30 modular OpenTofu modules for 40+ teams. Hands-on with Terraform/OpenTofu, Kubernetes (EKS, AKS), GitHub Actions, ArgoCD, Atlantis, Datadog, and Dynatrace, and fluent in Go, C#, Java, Python, and Node.js. Track record of turning manual operations into code: Backstage self-service that cut production promotion from 7 days to 15 minutes, and Terraform-managed observability that cut incident frequency from every 48 hours to every two weeks.
+
+### Manager (mgr)
+
+**Headline:** Platform Engineering Manager
+
+Platform engineering manager with nearly two decades in production systems, leading teams that build internal developer platforms, CI/CD, and cloud infrastructure across Azure and AWS. Currently leads a 13-engineer platform team, principal through professional level, at Blue Shield of California (Stellarus), delivering a projected $4M modernization that replaces Digital.ai Release with Backstage-driven self-service provisioning for 40+ teams. Has managed teams of up to 24 engineers across the US, EU, India, and China while staying hands-on in technical direction, with results including production promotion cut from 7 days to 15 minutes, uptime raised from 97% to 99% across 5 platforms, and ~20 legacy applications modernized to .NET Core.
+
+### Director (dir)
+
+**Headline:** Platform Engineering & DevOps Leader
+
+Platform engineering and DevOps leader with nearly two decades in production systems, setting strategy for internal developer platforms, GitOps, and cloud infrastructure across Azure and AWS. Owns the platform roadmap at Blue Shield of California (Stellarus), moving from team self-managed infrastructure to a centralized, GitOps-driven model, and leads a projected $4M modernization that gives 40+ teams Backstage-driven self-service while making FinOps an informed partner rather than a gate. Has built and led organizations of up to 24 engineers across the US, EU, India, and China, and ties platform investment to business outcomes: production promotion cut from 7 days to 15 minutes, uptime raised from 97% to 99% across 5 platforms, and ISO 27001 certification maintained through CI/CD and access guardrails.

@@ -1,42 +1,54 @@
 import './App.css'
 import { Experience } from './components/Experience'
-import { Hero } from './components/Hero'
+import { ResumeDownloads } from './components/ResumeDownloads'
 import { Section } from './components/Section'
+import { SheetHeader } from './components/SheetHeader'
 import { SiteFooter } from './components/SiteFooter'
 import { Skills } from './components/Skills'
 import { education, interests, summary } from './data/resume'
 
 function App() {
   return (
-    <div className="page">
+    <div className="stage">
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
-      <Hero />
+      <div className="frame">
+        <ResumeDownloads />
 
-      <main id="main-content">
-        <Section id="summary" eyebrow="Summary" title="The short version">
-          <p className="prose">{summary}</p>
-        </Section>
+        <main id="main-content" className="sheet">
+          <SheetHeader />
+          <hr className="sheet__rule" />
+          <div className="sheet__body">
+            <div className="sheet__main">
+              <Section id="summary" title="Profile Summary">
+                <p className="band summary">{summary}</p>
+              </Section>
+              <Experience />
+            </div>
 
-        <Skills />
-        <Experience />
-
-        <Section id="education" eyebrow="Education" title="Foundations">
-          <p className="prose">
-            <strong>{education.school}</strong>, {education.degree}, {education.location}
-          </p>
-        </Section>
-
-        <Section id="interests" eyebrow="Interests" title="Off the clock">
-          <ul className="interests">
-            {interests.map((interest) => (
-              <li key={interest}>{interest}</li>
-            ))}
-          </ul>
-        </Section>
-      </main>
-
+            <div className="sheet__side">
+              <Skills />
+              <Section id="education" title="Education">
+                <ul className="sidebar-list">
+                  <li>
+                    <strong>{education.school}</strong>
+                  </li>
+                  <li>{education.degree}</li>
+                  <li>{education.location}</li>
+                </ul>
+              </Section>
+              <Section id="interests" title="Interests">
+                <ul className="sidebar-list">
+                  {interests.map((interest) => (
+                    <li key={interest}>{interest}</li>
+                  ))}
+                </ul>
+              </Section>
+            </div>
+          </div>
+        </main>
+      </div>
       <SiteFooter />
     </div>
   )

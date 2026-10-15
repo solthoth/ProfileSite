@@ -2,36 +2,32 @@
 
 ## Content and data model
 
-The resume's content lives in two places that must be kept in sync by hand:
+The resume's content lives in two places, kept in sync:
 
-1. [`carlos-barajas-resume.md`](https://github.com/solthoth/ProfileSite/blob/main/carlos-barajas-resume.md) at the repo root — the canonical source of truth. This file is never deleted or auto-generated away.
-2. `src/data/resume.ts` — a hand-transcribed, typed version of the same content, consumed directly by the React components. Types include `Achievement`, `RoleStage`, `ExperienceEntry`, `EarlierRole`, and `SkillCategory`.
+1. [`carlos-barajas-resume.md`](https://github.com/solthoth/ProfileSite/blob/main/carlos-barajas-resume.md) at the repo root is the canonical source of truth. This file is never deleted or auto-generated. Each Experience bullet carries an audience tag (`<!-- ic mgr dir -->`), and a closing **Resume Variants** section holds each downloadable edition's headline and summary.
+2. `src/data/resume.ts` is a hand-transcribed, typed version of the same content, consumed directly by the React components. Types include `Achievement` (with `audiences`), `RoleStage`, `ExperienceEntry`, `EarlierRole`, and `SkillCategory`.
 
-There's no automated parsing between the two — when the resume changes, both files are updated together. Every fact rendered in the UI should trace back to the Markdown file.
+`src/data/resume.test.ts` imports the Markdown and fails if any Experience bullet's text or audience tags in `resume.ts` differ from it. Every fact rendered in the UI should trace back to the Markdown file.
+
+## Resume PDFs
+
+`pnpm resumes` (`scripts/resume/build_resumes.py`) parses the Markdown and renders IC, Manager, and Director editions to `.docx` with python-docx. Microsoft Word converts them to PDF, and they're committed to `public/resumes/`. It also writes `src/data/resume-editions.json`, which drives the site's download links. A unit test compares the hash recorded there with the current Markdown, so stale PDFs fail the build. See [scripts/resume/README.md](https://github.com/solthoth/ProfileSite/blob/main/scripts/resume/README.md).
 
 ## Page structure
 
-The site is a single long-scroll page — there's no client-side router. An earlier Angular version of the site split roles into a list view and a per-role detail view, but that was an artifact of the old framework's routing defaults rather than something the content itself needed: every achievement is already shown inline.
+The site is a single page with no client-side router. It's laid out like the printed resume: a white frame on a sky-blue stage, with a download panel beside the resume sheet.
 
-`App.tsx` assembles the page from top to bottom:
-
-| Section | Component(s) | Notes |
+| Area | Component(s) | Notes |
 |---|---|---|
-| Header | `Hero` + `StatusPanel` | Name/title, plus a CLI-styled status panel that computes a live "years in production systems" figure from a fixed career-start date. |
-| Summary, Education, Interests | inline in `App.tsx` | Simple enough not to warrant their own components. |
-| Skills | `Skills` | Renders grouped chip lists by category. |
-| Experience | `Experience` + `ExperienceStage` | Renders as a CI/CD-pipeline-style rail — each employer is a stage group, each role within it a stage with a status badge ("current" vs. "complete") that animates in via an `IntersectionObserver`-based hook (`useInView`) as it scrolls into view. |
+| Download panel | `ResumeDownloads` + `PdfIcon` | One PDF link per edition from `resume-editions.json`. Sticky on desktop. |
+| Sheet header | `SheetHeader` | Name, headline, contact list, and the three decorative blocks. |
+| Summary, Experience | `Section`, `Experience`, `AchievementList`, `EarlierExperienceList` | The main column. Summary and bullets sit on light bands. |
+| Skills, Education, Interests | `Skills`, inline `Section`s in `App.tsx` | The sidebar column. |
 | Footer | `SiteFooter` | |
 
 ## Design system
 
-The visual direction is deliberately grounded in the subject's own domain — platform engineering and CI/CD — rather than a generic portfolio look:
-
-- **Typography**: Newsreader (display serif) for headings, IBM Plex Sans for body text, IBM Plex Mono reserved for status/data/labels — loaded via Google Fonts.
-- **Color**: warm ink/paper neutrals with a single copper accent, plus muted status green/amber for the pipeline-style badges. Deliberately not the near-black-background-with-neon-accent look common to developer portfolios.
-- **Layout**: a ~760px reading measure, with a single responsive breakpoint at 560px.
-
-Design tokens (light/dark aware via `prefers-color-scheme` and a `data-theme` override) live in `src/index.css`; layout and component styles live in `src/App.css`.
+The full reference is the [style guide](style-guide.md). In short: a sky/white/paper palette, one blue accent family for structure, teal reserved for the download panel, Montserrat and Lato on the web (Century Gothic and Aptos in the PDFs), light only, and breakpoints at 1200px and 720px. Tokens live in `src/index.css`; layout and component styles live in `src/App.css`.
 
 ## TypeScript project structure
 

@@ -1,32 +1,17 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
-test('homepage has no automatically detectable accessibility violations', async ({ page }) => {
-  await page.goto('/')
-  await page.waitForLoadState('networkidle')
+for (const [name, width] of [
+  ['desktop', 1440],
+  ['phone', 390],
+] as const) {
+  test(`homepage has no automatically detectable accessibility violations (${name})`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/')
+    await page.waitForLoadState('networkidle')
 
-  const results = await new AxeBuilder({ page }).analyze()
+    const results = await new AxeBuilder({ page }).analyze()
 
-  expect(results.violations).toEqual([])
-})
-
-test('the experience topology has no violations mid-flythrough', async ({ page }) => {
-  await page.goto('/')
-  await page.locator('.topology').scrollIntoViewIfNeeded()
-  await page.mouse.wheel(0, 1500)
-  await page.waitForTimeout(200)
-
-  const results = await new AxeBuilder({ page }).analyze()
-
-  expect(results.violations).toEqual([])
-})
-
-test('reduced motion has no violations', async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: 'reduce' })
-  await page.goto('/')
-  await page.waitForLoadState('networkidle')
-
-  const results = await new AxeBuilder({ page }).analyze()
-
-  expect(results.violations).toEqual([])
-})
+    expect(results.violations).toEqual([])
+  })
+}

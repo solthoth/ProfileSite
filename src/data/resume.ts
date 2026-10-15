@@ -44,16 +44,11 @@ export const person = {
   email: 'carlos.barajas@proton.me',
   linkedin: 'https://www.linkedin.com/in/solthoth',
   github: 'https://github.com/solthoth',
+  website: 'https://solthoth.com',
 }
 
 export const summary =
   'Platform engineering leader with nearly two decades in production systems, building internal developer platforms, modernizing CI/CD, and driving GitOps transformations across Azure and AWS. Currently leads a 13-engineer platform team at Blue Shield of California (Stellarus) through a projected $4M modernization replacing Digital.ai Release with Backstage-driven self-service provisioning for 40+ teams. Has built and led globally distributed teams of up to 24 engineers across the US, EU, India, and China, using Backstage, Terraform/OpenTofu, Crossplane, ArgoCD, and Kargo alongside observability standards, DORA metrics, and agentic AI tooling to raise developer productivity. Combines hands-on engineering in Go, C#, Java, Python, and Node.js with setting technical direction and mentoring engineers at every level, from professional to principal.'
-
-export const stack = ['Go', 'C#', 'Java', 'Python', 'Node.js']
-
-// Earliest role on the resume (Santa Barbara Tax Products Group, Jun 2008),
-// used to compute a live "years in production systems" figure.
-export const careerStart = new Date(2008, 5, 1)
 
 export const skills: SkillCategory[] = [
   {
