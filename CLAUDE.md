@@ -27,6 +27,8 @@ These scripts are the single source of truth: the local pre-commit hooks and the
 
 Resume content is hand-transcribed into [`src/data/resume.ts`](src/data/resume.ts), typed as `Achievement`, `RoleStage`, `ExperienceEntry`, `EarlierRole`, and `SkillCategory`. It must be kept in sync with `carlos-barajas-resume.md` by hand — there's no automated parsing. When the resume changes, update both files together. Every fact rendered in the UI should trace back to the Markdown file; don't invent content.
 
+The Markdown file also feeds separate resume variants (IC, manager, director), so it stays deliberately verbose. Each Experience bullet ends with an audience tag comment (`<!-- ic mgr dir -->`), mirrored as `Achievement.audiences` (`Audience = 'ic' | 'mgr' | 'dir'`) in `resume.ts`. The website renders every bullet; variants keep only the bullets tagged for them. Trim in the variant, not in the source.
+
 ### Components
 
 - [`App.tsx`](src/App.tsx) — assembles the page: `Hero`, then `Section`-wrapped Summary/Skills/Experience/Education/Interests, then `SiteFooter`. Summary, Education, and Interests are simple enough to stay inline rather than their own components.
@@ -57,7 +59,7 @@ Uses TS project references — the root `tsconfig.json` is just a solution file 
 
 ### Testing
 
-Vitest with the jsdom environment and Testing Library. Config lives in `vite.config.ts` under the `test` key — note `include: ['src/**/*.{test,spec}.{ts,tsx}']` is deliberately scoped to `src/`, not the default. `src/setupTests.ts` registers `@testing-library/jest-dom` matchers. `src/App.test.tsx` has smoke tests asserting the hero renders and every experience/earlier-experience entry appears.
+Vitest with the jsdom environment and Testing Library. Config lives in `vite.config.ts` under the `test` key — note `include: ['src/**/*.{test,spec}.{ts,tsx}']` is deliberately scoped to `src/`, not the default. `src/setupTests.ts` registers `@testing-library/jest-dom` matchers. `src/App.test.tsx` has smoke tests asserting the hero renders and every experience/earlier-experience entry appears. `src/data/resume.test.ts` imports the Markdown resume (`?raw`) and fails if any experience bullet's text or audience tags in `resume.ts` drift from it.
 
 Playwright covers end-to-end and scroll/animation-driven behavior under `e2e/`, configured in `playwright.config.ts` (`pnpm test:e2e`, `pnpm test:e2e:ui`). This exists specifically because headless Chrome's one-shot screenshot capture doesn't reliably tick `requestAnimationFrame`-driven work — GSAP `ScrollTrigger` tweens, React Three Fiber's `useFrame` loop — so verifying anything in `src/three/` beyond a static render requires a real browser's event loop, not a jsdom or single-screenshot check.
 
