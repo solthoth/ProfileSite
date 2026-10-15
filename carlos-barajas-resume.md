@@ -20,16 +20,18 @@ Platform engineering leader with nearly two decades in production systems, build
 
 ## Key Skills
 
-- **Leadership:** Team development, global/cross-functional team management, product roadmaps, mentorship, strong communication
+- **Leadership:** Team development, global/cross-functional team management, product roadmaps, mentorship, stakeholder partnership (FinOps, Product, Security)
 - **Cloud:** Azure, AWS
 - **Internal Developer Platform:** Backstage, software catalog, software templates
-- **Infrastructure as Code & Config Management:** Terraform, OpenTofu, Crossplane, Ansible, SaltStack, Puppet, Kustomize
-- **Containers:** Docker, Docker Compose, Kubernetes (EKS), Helm, Keda
+- **Infrastructure as Code & Config Management:** Terraform, OpenTofu, Crossplane, Ansible, Ansible Automation Platform, SaltStack, Puppet, Kustomize
+- **Containers:** Docker, Docker Compose, Kubernetes (EKS, AKS), Helm, Keda
 - **CI/CD & GitOps:** GitHub Actions, GitLab, Jenkins, Bitbucket Pipelines, TeamCity, Octopus Deploy, Digital.ai, ArgoCD, Kargo, Atlantis
 - **Languages:** Go, C#, Java, Python, Node.js/NestJS, Delphi, SQL
-- **Observability:** Datadog, Dynatrace, Grafana, Prometheus, DORA metrics
+- **Messaging & Data:** RabbitMQ, MySQL, Postgres, MSSQL, Elasticsearch/OpenSearch
+- **Observability & Incident Response:** Datadog, Dynatrace, Grafana, Prometheus, PagerDuty, DORA metrics
+- **Security & Compliance:** ISO 27001, CI vulnerability scanning, CI/CD and infrastructure access guardrails
 - **AI / Agentic Dev Tooling:** GitHub Copilot, Codex, Claude Code
-- **Collaboration:** Jira, Confluence, Git, Perforce
+- **Collaboration:** Jira, Confluence, Git
 
 ## Experience
 
@@ -38,6 +40,11 @@ Platform engineering leader with nearly two decades in production systems, build
 **Feb 2026 – Present**
 
 - Lead a 13-engineer Platform Engineering team (3 principal, 5 lead, 3 senior, 2 professional) supporting an internal development platform centered on cloud infrastructure automation, where software teams own their own infrastructure, built on Azure APIs with Ansible and Digital.ai.
+- Spearhead the replacement of Digital.ai Release with a Backstage-driven self-service cloud provisioning platform, managing and providing technical direction to 8 remote engineers while balancing operational work; on track for completion by June 2027 with a projected $4M in value to the company:
+  - Building Backstage software templates as the interface for Azure changes, replacing free-form inputs with catalog references to simplify provisioning for 40+ teams
+  - Converting ~70 Ansible playbooks into ~30 modular OpenTofu modules covering resource groups, AKS, Azure SQL, Key Vault, VMs, App Service Plans, networking, and service principals, reducing configuration drift
+  - Orchestrating changes through GitHub Actions, Atlantis, and Ansible Automation Platform
+  - Partnering with FinOps to turn cost approval for net-new infrastructure from a blocking gate into informed oversight
 - Own CI/CD pipelines across a wide range of tech stacks: C#, Node.js, Java/Spring Boot (Maven & Gradle), Python, mobile (Kotlin & Swift), and React Native.
 - Set the product roadmap transforming the platform from team self-managed infrastructure to a centralized, GitOps-driven model:
   - Foundational infrastructure with OpenTofu & Terraform
@@ -45,11 +52,6 @@ Platform engineering leader with nearly two decades in production systems, build
   - Backstage as the internal developer portal
   - ArgoCD for delivery and Kargo for promotion
   - DORA metrics for measuring developer productivity
-- Spearhead the replacement of Digital.ai Release with a Backstage-driven self-service cloud provisioning platform, managing and providing technical direction to 8 remote engineers while balancing operational work; on track for completion by June 2027 with a projected $4M in value to the company:
-  - Backstage software templates as the interface for Azure changes, replacing free-form inputs with catalog references to simplify provisioning for 40+ teams
-  - Converting ~70 Ansible playbooks into ~30 modular OpenTofu modules covering resource groups, AKS, Azure SQL, Key Vault, VMs, App Service Plans, networking, and service principals, reducing configuration drift
-  - Orchestrating changes through GitHub Actions, Atlantis, and Ansible Automation Platform
-  - Partnering with FinOps to turn cost approval for net-new infrastructure from a blocking gate into informed oversight
 - Drive migration of teams from Bitbucket & Jenkins to GitHub and GitHub Actions, incorporating agentic solutions (GitHub Copilot, Codex, Claude Code).
 - Establish observability patterns with Dynatrace for proactive, agentic infrastructure.
 
@@ -133,7 +135,7 @@ Platform engineering leader with nearly two decades in production systems, build
 ### Earlier Experience
 
 - **Santa Barbara Tax Products Group** — Lead Applications Developer / Programmer Analyst (Jun 2008 – Oct 2015): Built and enhanced C#/.NET and Delphi financial-products systems, ACH and XML file-processing services, and co-designed the company MSSQL database.
-- **Coleman University** — Instructor, Java & JavaScript (Aug 2011 – Oct 2012): Taught object-oriented programming in Java and introductory JavaScript/web development.
+- **Coleman University** — Part-time Instructor, Java & JavaScript (Aug 2011 – Oct 2012): Taught object-oriented programming in Java and introductory JavaScript/web development.
 
 ## Education
 
