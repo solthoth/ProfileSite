@@ -28,7 +28,7 @@ Engineering leader specializing in platform engineering, developer experience, a
 - **Cloud:** Azure, AWS
 - **Infrastructure as Code & Config Management:** Terraform, OpenTofu, Crossplane, Ansible, SaltStack, Puppet, Kustomize
 - **Containers:** Docker, Docker Compose, Kubernetes (EKS), Helm, Keda
-- **CI/CD & GitOps:** GitHub Actions, GitLab, Jenkins, Bitbucket Pipelines, TeamCity, Octopus Deploy, Digital.ai, ArgoCD, Kargo
+- **CI/CD & GitOps:** GitHub Actions, GitLab, Jenkins, Bitbucket Pipelines, TeamCity, Octopus Deploy, Digital.ai, ArgoCD, Kargo, Atlantis
 - **Languages:** Go, C#, Java, Python, Node.js/NestJS, Delphi, SQL
 - **Observability:** Datadog, Dynatrace, Grafana, Prometheus, DORA metrics
 - **AI / Agentic Dev Tooling:** GitHub Copilot, Codex, Claude Code
@@ -48,6 +48,11 @@ Engineering leader specializing in platform engineering, developer experience, a
   - Backstage as the internal developer portal
   - ArgoCD for delivery and Kargo for promotion
   - DORA metrics for measuring developer productivity
+- Lead the replacement of Digital.ai Release with a Backstage-driven self-service cloud provisioning platform, managing and providing technical direction to 8 remote engineers while balancing operational work; on track for completion by June 2027 with a projected $4M in value to the company:
+  - Backstage software templates as the interface for Azure changes, replacing free-form inputs with catalog references to simplify provisioning for 40+ teams
+  - Converting ~70 Ansible playbooks into ~30 modular OpenTofu modules covering resource groups, AKS, Azure SQL, Key Vault, VMs, App Service Plans, networking, and service principals, reducing configuration drift
+  - Orchestrating changes through GitHub Actions, Atlantis, and Ansible Automation Platform
+  - Partnering with FinOps to turn cost approval for net-new infrastructure from a blocking gate into informed oversight
 - Drive migration of teams from Bitbucket & Jenkins to GitHub and GitHub Actions, incorporating agentic solutions (GitHub Copilot, Codex, Claude Code).
 - Implement observability patterns for proactive, agentic infrastructure using Dynatrace.
 

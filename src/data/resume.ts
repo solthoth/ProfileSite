@@ -81,6 +81,7 @@ export const skills: SkillCategory[] = [
       'Digital.ai',
       'ArgoCD',
       'Kargo',
+      'Atlantis',
     ],
   },
   {
@@ -121,6 +122,15 @@ export const experience: ExperienceEntry[] = [
               'Backstage as the internal developer portal',
               'ArgoCD for delivery and Kargo for promotion',
               'DORA metrics for measuring developer productivity',
+            ],
+          },
+          {
+            text: 'Lead the replacement of Digital.ai Release with a Backstage-driven self-service cloud provisioning platform, managing and providing technical direction to 8 remote engineers while balancing operational work; on track for completion by June 2027 with a projected $4M in value to the company:',
+            subItems: [
+              'Backstage software templates as the interface for Azure changes, replacing free-form inputs with catalog references to simplify provisioning for 40+ teams',
+              'Converting ~70 Ansible playbooks into ~30 modular OpenTofu modules covering resource groups, AKS, Azure SQL, Key Vault, VMs, App Service Plans, networking, and service principals, reducing configuration drift',
+              'Orchestrating changes through GitHub Actions, Atlantis, and Ansible Automation Platform',
+              'Partnering with FinOps to turn cost approval for net-new infrastructure from a blocking gate into informed oversight',
             ],
           },
           {
