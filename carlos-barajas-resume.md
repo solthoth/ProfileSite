@@ -58,13 +58,13 @@ Platform engineering leader with nearly two decades in production systems, build
 **Jun 2024 – Feb 2026**
 
 - Led 14 engineers across two teams: DevOps (10 engineers: 1 staff, 9 senior) and Developer Experience (4 platform engineers: 1 principal, 1 staff, 1 lead, 1 senior), owning engineering infrastructure and developer productivity at scale.
-- Drove implementation and deployment of an internal developer portal using Spotify's Backstage, improving service discovery, documentation, and onboarding workflows.
+- Drove implementation and deployment of an internal developer portal using Spotify's Backstage, cutting the time to promote a service to production from 7 days to 15 minutes and improving service discovery, documentation, and onboarding workflows.
 - Partnered with cross-functional teams to reduce friction in the development lifecycle through self-service tooling, automation, and improved onboarding.
 - Set infrastructure direction for engineering teams designing, deploying, and managing workloads on AWS and Kubernetes, with an emphasis on scalability and reliability.
 - Standardized service deployment patterns using Kustomize and Terraform, improving consistency across environments and reducing time to production.
 - Enabled a shift-left infrastructure model with internal tools that let teams provision and manage resources independently.
 - Improved CI/CD pipelines across teams using GitHub Actions, enhancing build/test/deploy efficiency and reliability.
-- Directed migration of legacy workloads to containerized services using Docker and Kubernetes.
+- Directed migration of ~70 legacy workloads to containerized services using Docker and Kubernetes.
 - Established observability standards and operational tooling, moving teams toward software-driven operations.
 - Provided architectural guidance on solution designs in Node.js, NestJS, and Go.
 
@@ -72,12 +72,14 @@ Platform engineering leader with nearly two decades in production systems, build
 
 **Jun 2021 – Jun 2024**
 
+*EV charging OCPP/OCPI platform · ~15K charging stations across US & EU regions*
+
 #### Site Reliability Engineering Manager (Oct 2021 – Jun 2024)
 
-- Led two SRE teams in the US and India totaling 10 engineers (2 leads, 8 senior), coordinating across US, EU, and India time zones.
-- Served as interim Cybersecurity Engineering Manager: implemented security controls per ISO 27001, added security/vulnerability checks to the CI pipeline, and drove patching across EC2 instances, base Docker images, and Java/Go applications.
+- Led two SRE teams in the US and India totaling 10 engineers (2 leads, 8 senior), coordinating across US, EU, and India time zones; improved uptime from 97% to 99% across 5 platforms.
+- Served as interim Cybersecurity Engineering Manager, ensuring the company maintained its ISO 27001 certification: enforced compliance controls, implemented guardrails between CI/CD and infrastructure access controls, added security/vulnerability checks to the CI pipeline, and drove patching across EC2 instances, base Docker images, and Java/Go applications.
 - Built and ran tier 3 incident management; codified PagerDuty services integrated with Datadog and Jira in Terraform.
-- Established end-to-end observability with Datadog using a code-first approach — Terraform-managed monitors, SLOs, and synthetic testing — and set logging standards for application development.
+- Established end-to-end observability with Datadog using a code-first approach — Terraform-managed monitors, SLOs, and synthetic testing — and set logging standards for application development; the resulting metrics enabled proactive fixes and load scaling that cut incident frequency from roughly every 48 hours to once every two weeks.
 - Containerized Java (Spring) and Go applications with Docker, deployed via Helm into EKS.
 - Built Lambda functions in Go and Java for API gateways and consumer services; optimized JPA-generated SQL against MySQL and Postgres.
 - Built AWS infrastructure with Terraform, including custom modules deployed across multiple AWS accounts.
@@ -108,7 +110,7 @@ Platform engineering leader with nearly two decades in production systems, build
 
 - Managed 24 engineers across multiple scrum teams in the US, India, and China (1 senior principal, 3 leads, and 20 senior and professional engineers), delivering business objectives on aggressive timelines.
 - Defined development and unit-testing best practices; introduced TDD with NUnit, NSubstitute, and Moq.
-- Migrated legacy Delphi and .NET Framework applications to .NET Core, deployed as Docker containers.
+- Migrated ~20 legacy Delphi and .NET Framework applications to .NET Core, deployed as Docker containers.
 - Built producer/consumer services for a distributed system using RabbitMQ, with data layers against Pervasive and MSSQL.
 - Established CI/CD with GitLab for Kubernetes-hosted applications.
 
