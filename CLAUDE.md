@@ -18,6 +18,8 @@ Vite + React 19 + TypeScript, scaffolded from [bit-and-byte-ideas/frontend-react
 - `pnpm typecheck` — `tsc -b` only (the type-check half of `build`).
 - `pnpm test` — run the Vitest unit suite once. `pnpm test:watch` for watch mode.
 - `pnpm preview` — serve the built `dist/` locally to sanity-check the production output.
+- `pnpm test:e2e` — Playwright suite; set `E2E_PORT` if 5173 is taken by another dev server.
+- `pnpm resumes` — regenerate the IC/Manager/Director PDFs in `public/resumes/` and `src/data/resume-editions.json` from the Markdown resume. Needs macOS + Microsoft Word + uv, so it's run locally, never in CI.
 
 These scripts are the single source of truth: the local pre-commit hooks and the CI workflow both invoke them, so a green commit and a green CI run can't disagree. Change behavior by editing the script in `package.json`, not by duplicating flags in a hook or workflow.
 
@@ -25,30 +27,29 @@ These scripts are the single source of truth: the local pre-commit hooks and the
 
 ### Resume content and data model
 
-Resume content is hand-transcribed into [`src/data/resume.ts`](src/data/resume.ts), typed as `Achievement`, `RoleStage`, `ExperienceEntry`, `EarlierRole`, and `SkillCategory`. It must be kept in sync with `carlos-barajas-resume.md` by hand — there's no automated parsing. When the resume changes, update both files together. Every fact rendered in the UI should trace back to the Markdown file; don't invent content.
+Resume content is hand-transcribed into [`src/data/resume.ts`](src/data/resume.ts), typed as `Achievement`, `RoleStage`, `ExperienceEntry`, `EarlierRole`, and `SkillCategory`. It must be kept in sync with `carlos-barajas-resume.md` by hand (a unit test checks the Experience bullets and tags). When the resume changes, update both files together **and run `pnpm resumes`**: a unit test fails when the committed PDFs were built from a different version of the Markdown. Every fact rendered in the UI should trace back to the Markdown file; don't invent content.
 
-The Markdown file also feeds separate resume variants (IC, manager, director), so it stays deliberately verbose. Each Experience bullet ends with an audience tag comment (`<!-- ic mgr dir -->`), mirrored as `Achievement.audiences` (`Audience = 'ic' | 'mgr' | 'dir'`) in `resume.ts`. The website renders every bullet; variants keep only the bullets tagged for them. Trim in the variant, not in the source.
+The Markdown file also feeds separate resume variants (IC, manager, director), so it stays deliberately verbose. Each Experience bullet ends with an audience tag comment (`<!-- ic mgr dir -->`), mirrored as `Achievement.audiences` (`Audience = 'ic' | 'mgr' | 'dir'`) in `resume.ts`. The website renders every bullet; variants keep only the bullets tagged for them. Trim in the variant, not in the source. Each edition's headline and summary live in the Markdown's closing **Resume Variants** section, which only the PDF build reads. See [`scripts/resume/README.md`](scripts/resume/README.md).
 
 ### Components
 
-- [`App.tsx`](src/App.tsx) — assembles the page: `Hero`, then `Section`-wrapped Summary/Skills/Experience/Education/Interests, then `SiteFooter`. Summary, Education, and Interests are simple enough to stay inline rather than their own components.
-- [`Hero.tsx`](src/components/Hero.tsx) + [`StatusPanel.tsx`](src/components/StatusPanel.tsx) — the name/title header and the signature CLI-style status panel (computes a live "years in production systems" figure from `careerStart` in `resume.ts`).
-- [`Section.tsx`](src/components/Section.tsx) — shared eyebrow + heading wrapper used by most sections.
-- [`Skills.tsx`](src/components/Skills.tsx) — renders `skills` as grouped chip lists.
-- [`Experience.tsx`](src/components/Experience.tsx) + [`ExperienceStage.tsx`](src/components/ExperienceStage.tsx) — the experience section renders as a CI/CD-pipeline-style rail: each employer is a stage group (`<ol className="rail">`), each role within it a stage (`<ol className="rail__roles">`) with a status badge ("current" vs. "complete") that animates in via `useInView` ([`src/hooks/useInView.ts`](src/hooks/useInView.ts), `IntersectionObserver`-based, guarded for environments without it).
-- [`SiteFooter.tsx`](src/components/SiteFooter.tsx).
+The page mirrors a printed resume: a white frame on a sky-blue stage, holding a download panel and the resume sheet.
 
-No router. The old Angular app's list+detail split was an artifact of Angular's routing defaults, not something the resume content needs — every achievement is already shown inline.
+- [`App.tsx`](src/App.tsx) — assembles the frame: `ResumeDownloads`, then the sheet (`SheetHeader`, a main column with Summary + `Experience`, and a sidebar with `Skills`, Education, and Interests), then `SiteFooter`. Summary, Education, and Interests stay inline.
+- [`ResumeDownloads.tsx`](src/components/ResumeDownloads.tsx) + [`PdfIcon.tsx`](src/components/PdfIcon.tsx) — one PDF download per edition, driven by [`src/data/editions.ts`](src/data/editions.ts) (which reads the generated `resume-editions.json`).
+- [`SheetHeader.tsx`](src/components/SheetHeader.tsx) — name, headline, contact list, and the three decorative blocks.
+- [`Section.tsx`](src/components/Section.tsx) — shared `h2` wrapper.
+- [`Experience.tsx`](src/components/Experience.tsx), [`AchievementList.tsx`](src/components/AchievementList.tsx), [`EarlierExperienceList.tsx`](src/components/EarlierExperienceList.tsx), [`Skills.tsx`](src/components/Skills.tsx), [`SiteFooter.tsx`](src/components/SiteFooter.tsx).
+
+No router, no WebGL/animation layer. The earlier 3D redesign was removed (see `docs/redesign/00-overview.md`, marked superseded); don't reintroduce three.js/GSAP without a new decision.
 
 ### Design system
 
-Tokens (light/dark aware, `prefers-color-scheme` + `data-theme` override) live in [`src/index.css`](src/index.css); layout and component styles in [`src/App.css`](src/App.css). Direction is an "infrastructure console" aesthetic grounded in the subject's actual domain (platform engineering / CI/CD) rather than a generic portfolio look:
+[`docs/style-guide.md`](docs/style-guide.md) is the reference: palette, type, layout, components, and the PDF template. Tokens live in [`src/index.css`](src/index.css), layout and component styles in [`src/App.css`](src/App.css), and the PDF palette at the top of [`scripts/resume/build_resumes.py`](scripts/resume/build_resumes.py). Change a token in both and update the guide.
 
-- Type: Newsreader (display serif) + IBM Plex Sans (body) + IBM Plex Mono (status/data/labels only), loaded via Google Fonts `<link>` tags in `index.html`.
-- Color: warm ink/paper neutrals with one copper accent and muted status green/amber for the CI-style badges — not the near-black + neon-terminal look.
-- Reading measure ~760px (`--measure`), single responsive breakpoint at 560px.
-
-When editing CSS, watch for selector-specificity collisions between type-based and class-based selectors (e.g. `.section` vs `h2`) — see the `frontend-design` skill (`.claude/skills/frontend-design/`) for the fuller design process this app was built with.
+- Type: Montserrat (display) + Lato (body) via Google Fonts in `index.html`. The PDFs use Word-bundled Century Gothic + Aptos.
+- Color: sky/white/paper surfaces, blue for structure, teal only in the download panel, red only on the PDF tag. Reference colors that fail AA as text have darker `-ink` variants.
+- Light only (no dark theme). Breakpoints at 1200px and 720px.
 
 ### TypeScript layout
 
@@ -59,9 +60,9 @@ Uses TS project references — the root `tsconfig.json` is just a solution file 
 
 ### Testing
 
-Vitest with the jsdom environment and Testing Library. Config lives in `vite.config.ts` under the `test` key — note `include: ['src/**/*.{test,spec}.{ts,tsx}']` is deliberately scoped to `src/`, not the default. `src/setupTests.ts` registers `@testing-library/jest-dom` matchers. `src/App.test.tsx` has smoke tests asserting the hero renders and every experience/earlier-experience entry appears. `src/data/resume.test.ts` imports the Markdown resume (`?raw`) and fails if any experience bullet's text or audience tags in `resume.ts` drift from it.
+Vitest with the jsdom environment and Testing Library. Config lives in `vite.config.ts` under the `test` key — note `include: ['src/**/*.{test,spec}.{ts,tsx}']` is deliberately scoped to `src/`, not the default. `src/setupTests.ts` registers `@testing-library/jest-dom` matchers. `src/App.test.tsx` has smoke tests for the header, every experience entry and skill category, and one download link per edition. `src/data/resume.test.ts` imports the Markdown resume (`?raw`) and fails if any experience bullet's text or audience tags in `resume.ts` drift from it, if an edition's PDF is missing, or if the PDFs were generated from a different version of the Markdown.
 
-Playwright covers end-to-end and scroll/animation-driven behavior under `e2e/`, configured in `playwright.config.ts` (`pnpm test:e2e`, `pnpm test:e2e:ui`). This exists specifically because headless Chrome's one-shot screenshot capture doesn't reliably tick `requestAnimationFrame`-driven work — GSAP `ScrollTrigger` tweens, React Three Fiber's `useFrame` loop — so verifying anything in `src/three/` beyond a static render requires a real browser's event loop, not a jsdom or single-screenshot check.
+Playwright covers real-browser behavior under `e2e/`, configured in `playwright.config.ts` (`pnpm test:e2e`, `pnpm test:e2e:ui`): PDFs served and downloadable, the sticky download panel, no horizontal scroll at 1440/900/390px, print styles, and axe scans at desktop and phone widths.
 
 ## Commit hygiene
 

@@ -7,14 +7,13 @@ test.describe('homepage', () => {
 
   test('renders the resume identity and title', async ({ page }) => {
     await expect(page).toHaveTitle('Carlos Barajas')
-    await expect(page.getByRole('heading', { name: 'Carlos Barajas', level: 1 })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Carlos Barajas')
   })
 
   test('renders every main section', async ({ page }) => {
-    await expect(page.locator('#summary')).toBeVisible()
-    await expect(page.locator('#experience')).toBeVisible()
-    await expect(page.locator('#education')).toBeVisible()
-    await expect(page.locator('#interests')).toBeVisible()
+    for (const id of ['#summary', '#experience', '#skills', '#education', '#interests']) {
+      await expect(page.locator(id)).toBeVisible()
+    }
   })
 
   test('renders every company from the experience data', async ({ page }) => {
@@ -30,7 +29,6 @@ test.describe('homepage', () => {
       await expect(page.getByText(company, { exact: false }).first()).toBeVisible()
     }
   })
-
 })
 
 test('homepage has no console errors on load', async ({ page }) => {
@@ -44,3 +42,12 @@ test('homepage has no console errors on load', async ({ page }) => {
 
   expect(errors).toEqual([])
 })
+
+for (const width of [1440, 900, 390]) {
+  test(`no horizontal page scroll at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/')
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+    expect(overflow).toBe(0)
+  })
+}

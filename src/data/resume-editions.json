@@ -1,0 +1,28 @@
+{
+  "source": "carlos-barajas-resume.md",
+  "sourceSha256": "db91085714e7d27d3a885eaa550881ad32bb9a8f2248d12a58e8a9775cd2e4f9",
+  "generated": "2026-10-14",
+  "editions": [
+    {
+      "id": "ic",
+      "label": "Individual Contributor",
+      "headline": "Platform & DevOps Engineer",
+      "file": "/resumes/carlos-barajas-resume-ic.pdf",
+      "pages": 3
+    },
+    {
+      "id": "mgr",
+      "label": "Manager",
+      "headline": "Platform Engineering Manager",
+      "file": "/resumes/carlos-barajas-resume-manager.pdf",
+      "pages": 3
+    },
+    {
+      "id": "dir",
+      "label": "Director",
+      "headline": "Platform Engineering & DevOps Leader",
+      "file": "/resumes/carlos-barajas-resume-director.pdf",
+      "pages": 2
+    }
+  ]
+}

@@ -11,6 +11,10 @@ npm-debug.log*
 pnpm-debug.log*
 *.local
 
+# Resume build intermediates (PDFs in public/resumes are committed)
+scripts/resume/out/
+__pycache__/
+
 # Vite / build output
 dist/
 dist-ssr/

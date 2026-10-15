@@ -25,6 +25,10 @@ Each deploy workflow runs in its matching GitHub Environment (`dev` / `prod`) an
 
 If a Static Web App is ever re-provisioned, its deployment token changes; update the matching environment secret in this repo's GitHub settings.
 
+## Resume PDFs
+
+The downloadable resumes in `public/resumes/` are committed build artifacts (`pnpm resumes`). Vite copies `public/` into `dist/`, so the existing deploy workflows upload them to the Static Web App with the site; there's no separate upload step. CI can't regenerate them (no Microsoft Word on the runners), but a unit test fails if they're stale relative to `carlos-barajas-resume.md`.
+
 ## Shipping a change
 
 1. Open a PR against `main`; `ci.yml` runs lint/build/test.

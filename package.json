@@ -14,16 +14,12 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "resumes": "uv run --python 3.13 --with-requirements scripts/resume/requirements.txt python -I scripts/resume/build_resumes.py"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.8",
-    "@react-three/fiber": "^9.7.0",
-    "d3-force": "^3.0.0",
-    "gsap": "^3.15.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "three": "^0.185.1"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -35,11 +31,9 @@
     "@testing-library/jest-dom": "^6.10.0",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.5",
-    "@types/d3-force": "^3.0.10",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "@types/three": "^0.185.4",
     "@vitejs/plugin-react": "^6.1.0",
     "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^10.9.0",

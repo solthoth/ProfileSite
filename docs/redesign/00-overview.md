@@ -1,5 +1,7 @@
 # Redesign direction: a live systems topology
 
+> **Superseded (October 2026).** The 3D layer described here (WebGL hero field, GSAP-pinned experience flythrough, three.js/R3F/d3-force) was removed in favor of the print-resume design in [the style guide](../style-guide.md). This record is kept for history; none of the files it names exist anymore.
+
 **Status:** all five phases built. See `src/three/HeroField.tsx`, `src/three/ExperienceGraph.tsx`, `src/data/graph.ts`, `src/hooks/useWebGLCapable.ts`. This document is the reference for continuing the build in later iterations, not a progress log; update the phase list below as work lands rather than adding status checkboxes here.
 
 ## Design read

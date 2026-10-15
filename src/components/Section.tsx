@@ -2,18 +2,18 @@ import type { ReactNode } from 'react'
 
 interface SectionProps {
   id: string
-  eyebrow: string
   title: string
+  /** Full-bleed summary/bullet bands only extend to the sheet edge in the main column. */
+  className?: string
   children: ReactNode
 }
 
-export function Section({ id, eyebrow, title, children }: SectionProps) {
+export function Section({ id, title, className, children }: SectionProps) {
   return (
-    <section id={id} className="section" aria-labelledby={`${id}-heading`}>
-      <div className="section__head">
-        <p className="eyebrow">{eyebrow}</p>
-        <h2 id={`${id}-heading`}>{title}</h2>
-      </div>
+    <section id={id} className={`sheet-section ${className ?? ''}`.trim()} aria-labelledby={`${id}-heading`}>
+      <h2 id={`${id}-heading`} className="sheet-section__title">
+        {title}
+      </h2>
       {children}
     </section>
   )

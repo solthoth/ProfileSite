@@ -5,13 +5,14 @@ ProfileSite is Carlos Barajas's resume site, deployed at [solthoth.com](https://
 ## At a glance
 
 - **Stack**: React 19 + TypeScript + Vite, package-managed with pnpm.
-- **Content**: sourced from a single Markdown file (`carlos-barajas-resume.md`) at the repo root, hand-transcribed into a typed data module for the UI to render.
-- **Design**: an "infrastructure console" aesthetic — a CLI-style status panel and a CI/CD-pipeline-style experience timeline — grounded in the subject's own domain (platform engineering) rather than a generic portfolio template.
+- **Content**: sourced from a single Markdown file (`carlos-barajas-resume.md`) at the repo root, hand-transcribed into a typed data module for the UI. The same file generates downloadable IC, Manager, and Director resume PDFs.
+- **Design**: a clean print-resume system shared by the site and the PDFs. See the [style guide](style-guide.md).
 - **Hosting**: Azure Static Web Apps with separate `dev` and `prod` environments, provisioned and managed outside this repo (platform-foundation).
 
 ## Where to look next
 
-- [Architecture](architecture.md) — how the app is put together: data model, components, styling.
+- [Architecture](architecture.md) — how the app is put together: data model, resume PDFs, components.
+- [Style guide](style-guide.md) — color, type, layout, and the PDF template.
 - [Development](development.md) — running the project locally, testing, commit conventions.
 - [Deployment](deployment.md) — CI/CD pipeline, infrastructure, and how to ship a change to production.
 
